@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="tianwu03 的个人主页，记录项目、经历与持续探索。"
+    />
+    <meta name="theme-color" content="#f4f1ea" />
+    <title>tianwu03 | 个人主页</title>
+    <link rel="preconnect" href="https://api.github.com" />
+    <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="返回首页">
+        <span class="brand-mark">T</span>
+        <span>tianwu03</span>
+      </a>
+
+      <nav class="site-nav" aria-label="主导航">
+        <a href="#about">关于</a>
+        <a href="#projects">项目</a>
+        <a href="#contact">联系</a>
+      </nav>
+
+      <button class="theme-toggle" type="button" aria-label="切换颜色主题">
+        <span class="theme-icon" aria-hidden="true">◐</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero section" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">HELLO, WORLD</p>
+          <h1>
+            你好，我是
+            <span>tianwu03</span>
+          </h1>
+          <p class="hero-intro">
+            我关注技术、设计与创造，喜欢把想法变成简单、好用的数字产品。
+            这里是我的个人主页，也是我记录作品与成长的地方。
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#projects">查看项目</a>
+            <a
+              class="button button-ghost"
+              href="https://github.com/tianwu03"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+              <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="profile-card">
+          <div class="profile-decoration" aria-hidden="true"></div>
+          <img
+            src="./assets/avatar.png"
+            alt="tianwu03 的 GitHub 头像"
+            width="240"
+            height="240"
+          />
+          <div class="profile-card-copy">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>保持好奇，持续创造</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="about section" id="about">
+        <div class="section-heading reveal">
+          <p class="eyebrow">ABOUT ME</p>
+          <h2>关于我</h2>
+        </div>
+
+        <div class="about-grid">
+          <article class="about-story reveal">
+            <p>
+              欢迎来到我的数字空间。目前这还是一个正在生长的主页，之后我会在这里分享近期项目、学习笔记和有趣的实验。
+            </p>
+            <p>
+              我相信好的作品来自清晰的思考和持续的打磨，也期待用技术解决真实的问题。
+            </p>
+          </article>
+
+          <div class="skill-list reveal" aria-label="关注方向">
+            <article class="skill-card">
+              <span>01</span>
+              <h3>开发</h3>
+              <p>探索现代 Web 技术与工程实践。</p>
+            </article>
+            <article class="skill-card">
+              <span>02</span>
+              <h3>设计</h3>
+              <p>关注直观、克制且有温度的体验。</p>
+            </article>
+            <article class="skill-card">
+              <span>03</span>
+              <h3>创造</h3>
+              <p>让灵感落地，让作品持续生长。</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="projects section" id="projects">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow">SELECTED WORK</p>
+            <h2>近期项目</h2>
+          </div>
+          <a
+            class="text-link"
+            href="https://github.com/tianwu03?tab=repositories"
+            target="_blank"
+            rel="noreferrer"
+          >
+            查看全部 <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="project-grid" id="project-grid" aria-live="polite">
+          <article class="project-card project-placeholder">
+            <p class="project-index">LOADING</p>
+            <h3>正在读取 GitHub 项目...</h3>
+            <p>公开仓库会自动显示在这里。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="contact section" id="contact">
+        <div class="contact-card reveal">
+          <p class="eyebrow">LET'S CONNECT</p>
+          <h2>一起聊聊新的想法。</h2>
+          <p>无论是项目合作、技术交流，还是简单打个招呼，都欢迎通过 GitHub 联系我。</p>
+          <a
+            class="button button-light"
+            href="https://github.com/tianwu03"
+            target="_blank"
+            rel="noreferrer"
+          >
+            前往 GitHub <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>© <span id="current-year"></span> tianwu03</span>
+      <span>Designed &amp; built with curiosity.</span>
+    </footer>
+  </body>
+</html>
