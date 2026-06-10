@@ -5,155 +5,334 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="tianwu03 的个人主页，记录项目、经历与持续探索。"
+      content="tianwu03 的个人主页与硬件工程师简历，关注电路设计、嵌入式系统和产品落地。"
     />
-    <meta name="theme-color" content="#f4f1ea" />
-    <title>tianwu03 | 个人主页</title>
-    <link rel="preconnect" href="https://api.github.com" />
-    <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+    <meta name="theme-color" content="#08120f" />
+    <title>tianwu03 | 硬件工程师</title>
     <link rel="stylesheet" href="./styles.css" />
     <script src="./script.js" defer></script>
   </head>
   <body>
+    <div class="circuit-background" aria-hidden="true"></div>
+
     <header class="site-header">
       <a class="brand" href="#home" aria-label="返回首页">
-        <span class="brand-mark">T</span>
-        <span>tianwu03</span>
+        <span class="brand-icon">TW</span>
+        <span class="brand-copy">
+          <strong>tianwu03</strong>
+          <small>HARDWARE ENGINEER</small>
+        </span>
       </a>
 
       <nav class="site-nav" aria-label="主导航">
-        <a href="#about">关于</a>
-        <a href="#projects">项目</a>
+        <a href="#about">个人介绍</a>
+        <a href="#expertise">专业能力</a>
+        <a href="#resume">简历</a>
         <a href="#contact">联系</a>
       </nav>
 
-      <button class="theme-toggle" type="button" aria-label="切换颜色主题">
-        <span class="theme-icon" aria-hidden="true">◐</span>
-      </button>
+      <div class="header-actions">
+        <button class="icon-button theme-toggle" type="button" aria-label="切换颜色主题">
+          <span aria-hidden="true">◐</span>
+        </button>
+        <button class="print-button" type="button">打印简历</button>
+      </div>
     </header>
 
     <main>
       <section class="hero section" id="home">
         <div class="hero-copy">
-          <p class="eyebrow">HELLO, WORLD</p>
+          <div class="signal-label">
+            <span class="signal-dot"></span>
+            AVAILABLE FOR NEW IDEAS
+          </div>
+          <p class="eyebrow">HARDWARE · EMBEDDED · PRODUCT</p>
           <h1>
-            你好，我是
-            <span>tianwu03</span>
+            把复杂电路，
+            <span>做成可靠产品。</span>
           </h1>
           <p class="hero-intro">
-            我关注技术、设计与创造，喜欢把想法变成简单、好用的数字产品。
-            这里是我的个人主页，也是我记录作品与成长的地方。
+            你好，我是 <strong>tianwu03</strong>，一名硬件工程师。
+            我关注从需求分析、原理图与 PCB 设计，到调试验证和产品落地的完整过程。
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#projects">查看项目</a>
+            <a class="button button-primary" href="#resume">查看我的简历</a>
             <a
-              class="button button-ghost"
+              class="button button-secondary"
               href="https://github.com/tianwu03"
               target="_blank"
               rel="noreferrer"
             >
-              GitHub
-              <span aria-hidden="true">↗</span>
+              GitHub <span aria-hidden="true">↗</span>
             </a>
           </div>
+
+          <dl class="hero-stats" aria-label="工作关键词">
+            <div>
+              <dt>01</dt>
+              <dd>系统思维</dd>
+            </div>
+            <div>
+              <dt>02</dt>
+              <dd>可靠设计</dd>
+            </div>
+            <div>
+              <dt>03</dt>
+              <dd>持续验证</dd>
+            </div>
+          </dl>
         </div>
 
-        <div class="profile-card">
-          <div class="profile-decoration" aria-hidden="true"></div>
-          <img
-            src="./assets/avatar.png"
-            alt="tianwu03 的 GitHub 头像"
-            width="240"
-            height="240"
-          />
-          <div class="profile-card-copy">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span>保持好奇，持续创造</span>
+        <div class="board-visual" aria-label="硬件工程师视觉名片">
+          <span class="board-tag board-tag-top">REV 01</span>
+          <span class="board-tag board-tag-bottom">DESIGNED BY TIANWU03</span>
+          <div class="chip">
+            <img src="./assets/avatar.png" alt="tianwu03 的 GitHub 头像" />
+            <div class="chip-copy">
+              <span>CORE PROCESSOR</span>
+              <strong>TIANWU03</strong>
+              <small>HARDWARE ENGINEER</small>
+            </div>
           </div>
+          <div class="trace trace-a"></div>
+          <div class="trace trace-b"></div>
+          <div class="trace trace-c"></div>
+          <span class="component component-a">R01</span>
+          <span class="component component-b">C08</span>
+          <span class="component component-c">JTAG</span>
+          <span class="component component-d">3V3</span>
         </div>
       </section>
 
       <section class="about section" id="about">
+        <div class="section-number" aria-hidden="true">01 / INTRO</div>
         <div class="section-heading reveal">
-          <p class="eyebrow">ABOUT ME</p>
-          <h2>关于我</h2>
+          <p class="eyebrow">PERSONAL PROFILE</p>
+          <h2>个人介绍</h2>
         </div>
 
-        <div class="about-grid">
-          <article class="about-story reveal">
+        <div class="about-layout">
+          <article class="about-lead reveal">
             <p>
-              欢迎来到我的数字空间。目前这还是一个正在生长的主页，之后我会在这里分享近期项目、学习笔记和有趣的实验。
-            </p>
-            <p>
-              我相信好的作品来自清晰的思考和持续的打磨，也期待用技术解决真实的问题。
+              我喜欢拆解复杂问题，并通过清晰的架构、扎实的电路设计和充分验证，
+              将一个想法逐步推进为可以稳定工作的真实产品。
             </p>
           </article>
-
-          <div class="skill-list reveal" aria-label="关注方向">
-            <article class="skill-card">
-              <span>01</span>
-              <h3>开发</h3>
-              <p>探索现代 Web 技术与工程实践。</p>
-            </article>
-            <article class="skill-card">
-              <span>02</span>
-              <h3>设计</h3>
-              <p>关注直观、克制且有温度的体验。</p>
-            </article>
-            <article class="skill-card">
-              <span>03</span>
-              <h3>创造</h3>
-              <p>让灵感落地，让作品持续生长。</p>
-            </article>
+          <div class="about-detail reveal">
+            <p>
+              作为硬件工程师，我重视设计背后的逻辑：不仅关注电路能否工作，也关注可制造性、
+              可测试性、可靠性与后续维护。我愿意持续学习，并乐于与结构、软件及供应链伙伴协作。
+            </p>
+            <div class="principles">
+              <span>严谨</span>
+              <span>可靠</span>
+              <span>协作</span>
+              <span>迭代</span>
+            </div>
           </div>
         </div>
       </section>
 
-      <section class="projects section" id="projects">
+      <section class="expertise section" id="expertise">
+        <div class="section-number" aria-hidden="true">02 / EXPERTISE</div>
         <div class="section-heading reveal">
-          <div>
-            <p class="eyebrow">SELECTED WORK</p>
-            <h2>近期项目</h2>
-          </div>
-          <a
-            class="text-link"
-            href="https://github.com/tianwu03?tab=repositories"
-            target="_blank"
-            rel="noreferrer"
-          >
-            查看全部 <span aria-hidden="true">↗</span>
-          </a>
+          <p class="eyebrow">ENGINEERING CAPABILITIES</p>
+          <h2>专业能力</h2>
         </div>
 
-        <div class="project-grid" id="project-grid" aria-live="polite">
-          <article class="project-card project-placeholder">
-            <p class="project-index">LOADING</p>
-            <h3>正在读取 GitHub 项目...</h3>
-            <p>公开仓库会自动显示在这里。</p>
+        <div class="expertise-grid">
+          <article class="expertise-card reveal">
+            <span class="card-code">HW.01</span>
+            <div class="card-icon" aria-hidden="true">⌁</div>
+            <h3>电路设计</h3>
+            <p>围绕产品需求进行器件选型、原理图设计、电源与接口方案规划。</p>
+            <ul>
+              <li>模拟与数字电路</li>
+              <li>电源及接口设计</li>
+              <li>器件选型与 BOM</li>
+            </ul>
           </article>
+
+          <article class="expertise-card reveal">
+            <span class="card-code">HW.02</span>
+            <div class="card-icon" aria-hidden="true">▦</div>
+            <h3>PCB 与工程化</h3>
+            <p>关注布局布线、信号完整性以及可制造性，让设计顺利走向实物。</p>
+            <ul>
+              <li>PCB Layout</li>
+              <li>DFM / DFT 思维</li>
+              <li>生产资料整理</li>
+            </ul>
+          </article>
+
+          <article class="expertise-card reveal">
+            <span class="card-code">HW.03</span>
+            <div class="card-icon" aria-hidden="true">⌇</div>
+            <h3>调试与验证</h3>
+            <p>通过测量、定位与复盘推动问题闭环，持续提升产品稳定性。</p>
+            <ul>
+              <li>板级调试与测试</li>
+              <li>问题定位与分析</li>
+              <li>可靠性验证</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="resume section" id="resume">
+        <div class="section-number" aria-hidden="true">03 / RESUME</div>
+        <div class="resume-shell">
+          <aside class="resume-sidebar">
+            <div>
+              <p class="eyebrow">CURRICULUM VITAE</p>
+              <h2>个人简历</h2>
+              <p class="resume-summary">
+                硬件工程师，关注电路设计、嵌入式硬件、调试验证与产品工程化。
+              </p>
+            </div>
+
+            <div class="resume-side-block">
+              <h3>联系方式</h3>
+              <a href="https://github.com/tianwu03" target="_blank" rel="noreferrer">
+                github.com/tianwu03
+              </a>
+              <span>中国 · 可远程协作</span>
+            </div>
+
+            <div class="resume-side-block">
+              <h3>工具与方向</h3>
+              <div class="tag-list">
+                <span>原理图</span>
+                <span>PCB</span>
+                <span>嵌入式硬件</span>
+                <span>示波器</span>
+                <span>逻辑分析</span>
+                <span>焊接调试</span>
+                <span>Git</span>
+              </div>
+            </div>
+
+            <p class="resume-note">
+              这是当前简历框架。可继续补充真实联系方式、教育经历和项目成果。
+            </p>
+          </aside>
+
+          <div class="resume-main">
+            <article class="resume-block">
+              <div class="resume-block-title">
+                <span>PROFILE</span>
+                <h3>职业概述</h3>
+              </div>
+              <p>
+                具备硬件产品全流程意识，能够从需求出发进行方案分析和电路设计，
+                并通过样机调试、测试验证及跨团队协作推动产品持续完善。
+              </p>
+            </article>
+
+            <article class="resume-block">
+              <div class="resume-block-title">
+                <span>EXPERIENCE</span>
+                <h3>项目与工作经历</h3>
+              </div>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span class="timeline-marker"></span>
+                  <div class="timeline-head">
+                    <h4>硬件系统设计与开发</h4>
+                    <span>持续积累</span>
+                  </div>
+                  <p>
+                    根据需求完成硬件方案分析、关键器件选型、原理图设计与设计评审，
+                    并配合完成样机调试和问题闭环。
+                  </p>
+                </div>
+                <div class="timeline-item">
+                  <span class="timeline-marker"></span>
+                  <div class="timeline-head">
+                    <h4>板级调试与可靠性验证</h4>
+                    <span>持续积累</span>
+                  </div>
+                  <p>
+                    使用常见测试仪器分析板级信号与电源状态，记录问题、定位原因，
+                    并通过设计迭代提升系统稳定性。
+                  </p>
+                </div>
+                <div class="timeline-item placeholder-item">
+                  <span class="timeline-marker"></span>
+                  <div class="timeline-head">
+                    <h4>你的真实经历</h4>
+                    <span>待补充</span>
+                  </div>
+                  <p>后续可在这里填写公司、项目名称、职责以及可量化成果。</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="resume-block">
+              <div class="resume-block-title">
+                <span>KNOWLEDGE</span>
+                <h3>能力矩阵</h3>
+              </div>
+              <div class="skill-matrix">
+                <div>
+                  <span>硬件方案与电路设计</span>
+                  <i style="--level: 86%"></i>
+                </div>
+                <div>
+                  <span>PCB 与工程化意识</span>
+                  <i style="--level: 80%"></i>
+                </div>
+                <div>
+                  <span>调试、测试与问题定位</span>
+                  <i style="--level: 84%"></i>
+                </div>
+                <div>
+                  <span>跨团队沟通与文档</span>
+                  <i style="--level: 78%"></i>
+                </div>
+              </div>
+            </article>
+
+            <article class="resume-block">
+              <div class="resume-block-title">
+                <span>EDUCATION</span>
+                <h3>教育与认证</h3>
+              </div>
+              <div class="empty-state">
+                <strong>等待补充你的教育经历</strong>
+                <span>学校 · 专业 · 学历 · 时间 / 专业认证</span>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 
       <section class="contact section" id="contact">
-        <div class="contact-card reveal">
-          <p class="eyebrow">LET'S CONNECT</p>
-          <h2>一起聊聊新的想法。</h2>
-          <p>无论是项目合作、技术交流，还是简单打个招呼，都欢迎通过 GitHub 联系我。</p>
-          <a
-            class="button button-light"
-            href="https://github.com/tianwu03"
-            target="_blank"
-            rel="noreferrer"
-          >
-            前往 GitHub <span aria-hidden="true">↗</span>
-          </a>
+        <div class="contact-panel reveal">
+          <div>
+            <p class="eyebrow">CONNECT / COLLABORATE</p>
+            <h2>一起把想法<br />焊接成现实。</h2>
+          </div>
+          <div class="contact-copy">
+            <p>
+              欢迎交流硬件设计、嵌入式系统、工程实践，或者任何值得动手验证的新想法。
+            </p>
+            <a
+              class="button button-light"
+              href="https://github.com/tianwu03"
+              target="_blank"
+              rel="noreferrer"
+            >
+              通过 GitHub 联系我 <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <span>© <span id="current-year"></span> tianwu03</span>
-      <span>Designed &amp; built with curiosity.</span>
+      <span>Designed for engineering, built with precision.</span>
     </footer>
   </body>
 </html>
