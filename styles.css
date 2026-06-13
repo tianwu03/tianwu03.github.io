@@ -883,6 +883,20 @@ h2 {
   font-size: 0.8rem;
 }
 
+.achievement-badge {
+  display: inline-flex;
+  margin-top: 11px;
+  padding: 5px 9px;
+  border: 1px solid color-mix(in srgb, var(--accent) 55%, var(--line));
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--ink);
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 .placeholder-item {
   opacity: 0.62;
 }
@@ -969,8 +983,12 @@ h2 {
 
 .interest-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+}
+
+.interest-content {
+  min-width: 0;
 }
 
 .interest-grid article {
@@ -996,6 +1014,56 @@ h2 {
   margin-bottom: 0;
   color: var(--muted);
   font-size: var(--text-xs);
+}
+
+.interest-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.gallery-placeholder {
+  position: relative;
+  display: flex;
+  min-height: 160px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 10px;
+  background:
+    linear-gradient(rgba(101, 112, 105, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(101, 112, 105, 0.08) 1px, transparent 1px),
+    var(--surface-strong);
+  background-size: 18px 18px;
+}
+
+.gallery-placeholder::after {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  border-top: 1px solid var(--accent);
+  border-right: 1px solid var(--accent);
+  content: "";
+}
+
+.gallery-placeholder span,
+.gallery-placeholder small {
+  color: var(--muted);
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+}
+
+.gallery-placeholder strong {
+  margin: 6px 0 2px;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
 }
 
 .contact {
@@ -1479,6 +1547,10 @@ h2 {
   .interest-grid {
     grid-template-columns: 1fr;
   }
+
+  .interest-gallery {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 480px) {
@@ -1545,6 +1617,10 @@ h2 {
 
   .contact-panel {
     padding: 34px 20px;
+  }
+
+  .interest-gallery {
+    grid-template-columns: 1fr;
   }
 }
 
