@@ -1,30 +1,189 @@
-const themeToggle = document.querySelector(".theme-toggle");
 const printButton = document.querySelector(".print-button");
 const year = document.querySelector("#current-year");
 const siteHeader = document.querySelector(".site-header");
 const aboutSection = document.querySelector("#about");
+const siteNav = document.querySelector(".site-nav");
+const soundControl = document.querySelector(".sound-control");
+const soundToggle = document.querySelector(".sound-toggle");
+const soundSlider = document.querySelector(".sound-slider");
+const soundValue = document.querySelector(".sound-value");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (year) {
   year.textContent = new Date().getFullYear();
 }
 
-const savedTheme = localStorage.getItem("theme");
-if (savedTheme) {
-  document.documentElement.dataset.theme = savedTheme;
+if (printButton) {
+  printButton.addEventListener("click", () => window.print());
 }
 
-if (themeToggle) {
-  themeToggle.addEventListener("click", () => {
-    const isDark = document.documentElement.dataset.theme === "dark";
-    const nextTheme = isDark ? "light" : "dark";
+let audioContext;
+let soundMuted = localStorage.getItem("sound-muted") === "true";
+let soundVolume = Number(localStorage.getItem("sound-volume") ?? 24);
+if (!Number.isFinite(soundVolume)) soundVolume = 24;
 
-    document.documentElement.dataset.theme = nextTheme;
-    localStorage.setItem("theme", nextTheme);
+const updateSoundControl = () => {
+  soundVolume = Math.min(100, Math.max(0, soundVolume));
+
+  if (soundControl) {
+    soundControl.style.setProperty("--sound-level", `${soundVolume}%`);
+  }
+  if (soundSlider) {
+    soundSlider.value = String(soundVolume);
+  }
+  if (soundValue) {
+    soundValue.textContent = soundMuted ? "OFF" : String(Math.round(soundVolume));
+  }
+  if (soundToggle) {
+    soundToggle.setAttribute("aria-pressed", String(soundMuted));
+  }
+};
+
+const playInterfaceTone = (frequency = 220, duration = 0.055) => {
+  if (soundMuted || soundVolume <= 0) return;
+
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass) return;
+
+  audioContext ??= new AudioContextClass();
+  if (audioContext.state === "suspended") {
+    void audioContext.resume();
+  }
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+  const now = audioContext.currentTime;
+
+  oscillator.type = "square";
+  oscillator.frequency.setValueAtTime(frequency, now);
+  oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.35, now + duration);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime((soundVolume / 100) * 0.045, now + 0.008);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+  oscillator.start(now);
+  oscillator.stop(now + duration + 0.01);
+};
+
+if (soundToggle) {
+  soundToggle.addEventListener("click", () => {
+    soundMuted = !soundMuted;
+    localStorage.setItem("sound-muted", String(soundMuted));
+    updateSoundControl();
+    if (!soundMuted) playInterfaceTone(260, 0.07);
   });
 }
 
-if (printButton) {
-  printButton.addEventListener("click", () => window.print());
+if (soundSlider) {
+  soundSlider.addEventListener("input", () => {
+    soundVolume = Number(soundSlider.value);
+    soundMuted = soundVolume === 0;
+    localStorage.setItem("sound-volume", String(soundVolume));
+    localStorage.setItem("sound-muted", String(soundMuted));
+    updateSoundControl();
+  });
+  soundSlider.addEventListener("change", () => playInterfaceTone(300, 0.065));
+}
+
+const createClickSparks = (x, y) => {
+  if (reduceMotion) return;
+
+  const fragment = document.createDocumentFragment();
+  for (let index = 0; index < 7; index += 1) {
+    const spark = document.createElement("span");
+    const angle = index * (360 / 7) + Math.random() * 18;
+    const distance = 18 + Math.random() * 24;
+
+    spark.className = "click-spark";
+    spark.style.left = `${x}px`;
+    spark.style.top = `${y}px`;
+    spark.style.setProperty("--spark-angle", `${angle}deg`);
+    spark.style.setProperty("--spark-distance", `${distance}px`);
+    spark.style.setProperty("--spark-color", index % 3 === 0 ? "#ffffff" : "#ff2a2a");
+    spark.addEventListener("animationend", () => spark.remove(), { once: true });
+    fragment.append(spark);
+  }
+  document.body.append(fragment);
+};
+
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".sound-slider")) {
+    createClickSparks(event.clientX, event.clientY);
+  }
+
+  const interactive = event.target.closest("a, button");
+  if (!interactive || interactive === soundToggle) return;
+  playInterfaceTone(interactive.matches(".button, .print-button") ? 180 : 235);
+});
+
+updateSoundControl();
+
+if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+  const navLinks = [...siteNav.querySelectorAll("a")];
+
+  const resetDock = () => {
+    navLinks.forEach((link) => link.style.setProperty("--dock-scale", "1"));
+  };
+
+  siteNav.addEventListener("pointermove", (event) => {
+    navLinks.forEach((link) => {
+      const rect = link.getBoundingClientRect();
+      const distance = Math.abs(event.clientX - (rect.left + rect.width / 2));
+      const proximity = Math.max(0, 1 - distance / 125);
+      link.style.setProperty("--dock-scale", String(1 + proximity * 0.22));
+    });
+  });
+  siteNav.addEventListener("pointerleave", resetDock);
+  navLinks.forEach((link) => {
+    link.addEventListener("focus", () => link.style.setProperty("--dock-scale", "1.18"));
+    link.addEventListener("blur", resetDock);
+  });
+}
+
+if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
+  const glowTargets = document.querySelectorAll(
+    ".board-visual, .expertise-card, .resume-shell, .education-entry, .interest-row, .contact-panel",
+  );
+  let activeGlowTarget;
+
+  const clearGlow = (target) => {
+    target.style.setProperty("--edge-opacity", "0");
+    target.classList.remove("is-edge-active");
+  };
+
+  glowTargets.forEach((target) => {
+    const edgeLight = document.createElement("span");
+    edgeLight.className = "pointer-edge-light";
+    edgeLight.setAttribute("aria-hidden", "true");
+    target.classList.add("edge-glow");
+    target.append(edgeLight);
+
+    target.addEventListener("pointermove", (event) => {
+      if (activeGlowTarget && activeGlowTarget !== target) {
+        clearGlow(activeGlowTarget);
+      }
+      activeGlowTarget = target;
+
+      const rect = target.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      const edgeDistance = Math.min(x, y, rect.width - x, rect.height - y);
+      const sensitivity = Math.min(110, Math.max(42, Math.min(rect.width, rect.height) * 0.24));
+      const proximity = Math.max(0, Math.min(1, 1 - edgeDistance / sensitivity));
+
+      target.style.setProperty("--edge-x", `${x}px`);
+      target.style.setProperty("--edge-y", `${y}px`);
+      target.style.setProperty("--edge-opacity", proximity.toFixed(3));
+      target.classList.toggle("is-edge-active", proximity > 0.1);
+    });
+
+    target.addEventListener("pointerleave", () => {
+      clearGlow(target);
+      if (activeGlowTarget === target) {
+        activeGlowTarget = undefined;
+      }
+    });
+  });
 }
 
 if (siteHeader && aboutSection) {
