@@ -9,8 +9,8 @@
     />
     <meta name="theme-color" content="#060606" />
     <title>顾峥 | 硬件工程师</title>
-    <link rel="stylesheet" href="./styles.css?v=effects-2" />
-    <script src="./script.js?v=effects-2" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=polish-1" />
+    <script src="./script.js?v=polish-1" defer></script>
   </head>
   <body>
     <div class="circuit-background" aria-hidden="true"></div>
@@ -31,19 +31,37 @@
       </nav>
 
       <div class="header-actions">
-        <div class="sound-control">
-          <button class="sound-toggle" type="button" aria-label="Toggle interface sounds" aria-pressed="false">
-            SND
+        <div class="music-control">
+          <audio
+            class="background-audio"
+            src="https://music.163.com/song/media/outer/url?id=2728251483.mp3"
+            preload="metadata"
+            loop
+            muted
+            playsinline
+          ></audio>
+          <button class="music-toggle" type="button" aria-label="播放背景音乐" aria-pressed="false">
+            PLAY
           </button>
+          <a
+            class="music-meta"
+            href="https://music.163.com/#/song?id=2728251483"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="在网易云音乐打开 Travelers' encore"
+          >
+            <strong>Travelers' encore</strong>
+            <small>王耳德 · NETEASE</small>
+          </a>
           <input
-            class="sound-slider"
+            class="music-slider"
             type="range"
             min="0"
             max="100"
-            value="24"
-            aria-label="Interface sound volume"
+            value="0"
+            aria-label="背景音乐音量"
           />
-          <span class="sound-value" aria-hidden="true">24</span>
+          <span class="music-value" aria-live="polite">MUTE</span>
         </div>
         <button class="print-button" type="button">打印简历</button>
       </div>

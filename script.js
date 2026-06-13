@@ -3,10 +3,11 @@ const year = document.querySelector("#current-year");
 const siteHeader = document.querySelector(".site-header");
 const aboutSection = document.querySelector("#about");
 const siteNav = document.querySelector(".site-nav");
-const soundControl = document.querySelector(".sound-control");
-const soundToggle = document.querySelector(".sound-toggle");
-const soundSlider = document.querySelector(".sound-slider");
-const soundValue = document.querySelector(".sound-value");
+const musicControl = document.querySelector(".music-control");
+const musicToggle = document.querySelector(".music-toggle");
+const musicSlider = document.querySelector(".music-slider");
+const musicValue = document.querySelector(".music-value");
+const backgroundAudio = document.querySelector(".background-audio");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (!reduceMotion && window.scrollY < 80) {
@@ -27,72 +28,86 @@ if (printButton) {
   printButton.addEventListener("click", () => window.print());
 }
 
-let audioContext;
-let soundMuted = localStorage.getItem("sound-muted") === "true";
-let soundVolume = Number(localStorage.getItem("sound-volume") ?? 24);
-if (!Number.isFinite(soundVolume)) soundVolume = 24;
+let musicVolume = 0;
+let lastAudibleVolume = Number(localStorage.getItem("music-volume") ?? 24);
+if (!Number.isFinite(lastAudibleVolume) || lastAudibleVolume <= 0) lastAudibleVolume = 24;
 
-const updateSoundControl = () => {
-  soundVolume = Math.min(100, Math.max(0, soundVolume));
+const updateMusicControl = (status) => {
+  musicVolume = Math.min(100, Math.max(0, musicVolume));
+  const isPlaying = Boolean(backgroundAudio && !backgroundAudio.paused && !backgroundAudio.muted && musicVolume > 0);
 
-  if (soundControl) {
-    soundControl.style.setProperty("--sound-level", `${soundVolume}%`);
+  if (musicControl) {
+    musicControl.style.setProperty("--music-level", `${musicVolume}%`);
+    musicControl.classList.toggle("is-playing", isPlaying);
+    musicControl.classList.toggle("is-unavailable", status === "NETEASE");
   }
-  if (soundSlider) {
-    soundSlider.value = String(soundVolume);
+  if (musicSlider) {
+    musicSlider.value = String(musicVolume);
   }
-  if (soundValue) {
-    soundValue.textContent = soundMuted ? "OFF" : String(Math.round(soundVolume));
+  if (musicValue) {
+    musicValue.textContent = status ?? (musicVolume === 0 ? "MUTE" : `${Math.round(musicVolume)}%`);
   }
-  if (soundToggle) {
-    soundToggle.setAttribute("aria-pressed", String(soundMuted));
+  if (musicToggle) {
+    musicToggle.textContent = isPlaying ? "PAUSE" : "PLAY";
+    musicToggle.setAttribute("aria-pressed", String(isPlaying));
+    musicToggle.setAttribute("aria-label", isPlaying ? "暂停背景音乐" : "播放背景音乐");
   }
 };
 
-const playInterfaceTone = (frequency = 220, duration = 0.055) => {
-  if (soundMuted || soundVolume <= 0) return;
+const playBackgroundMusic = async () => {
+  if (!backgroundAudio) return;
 
-  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextClass) return;
-
-  audioContext ??= new AudioContextClass();
-  if (audioContext.state === "suspended") {
-    void audioContext.resume();
+  if (musicVolume <= 0) {
+    musicVolume = lastAudibleVolume;
   }
-  const oscillator = audioContext.createOscillator();
-  const gain = audioContext.createGain();
-  const now = audioContext.currentTime;
+  backgroundAudio.volume = musicVolume / 100;
+  backgroundAudio.muted = false;
 
-  oscillator.type = "square";
-  oscillator.frequency.setValueAtTime(frequency, now);
-  oscillator.frequency.exponentialRampToValueAtTime(frequency * 1.35, now + duration);
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime((soundVolume / 100) * 0.045, now + 0.008);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
-  oscillator.connect(gain);
-  gain.connect(audioContext.destination);
-  oscillator.start(now);
-  oscillator.stop(now + duration + 0.01);
+  try {
+    await backgroundAudio.play();
+    updateMusicControl();
+  } catch (error) {
+    backgroundAudio.muted = true;
+    updateMusicControl(error?.name === "NotAllowedError" ? "CLICK" : "NETEASE");
+  }
 };
 
-if (soundToggle) {
-  soundToggle.addEventListener("click", () => {
-    soundMuted = !soundMuted;
-    localStorage.setItem("sound-muted", String(soundMuted));
-    updateSoundControl();
-    if (!soundMuted) playInterfaceTone(260, 0.07);
+if (backgroundAudio) {
+  backgroundAudio.muted = true;
+  backgroundAudio.volume = 0;
+  backgroundAudio.addEventListener("play", () => updateMusicControl());
+  backgroundAudio.addEventListener("pause", () => updateMusicControl());
+  backgroundAudio.addEventListener("error", () => updateMusicControl("NETEASE"));
+}
+
+if (musicToggle) {
+  musicToggle.addEventListener("click", () => {
+    if (!backgroundAudio) return;
+
+    if (!backgroundAudio.paused && !backgroundAudio.muted) {
+      backgroundAudio.pause();
+      backgroundAudio.muted = true;
+      updateMusicControl();
+      return;
+    }
+    void playBackgroundMusic();
   });
 }
 
-if (soundSlider) {
-  soundSlider.addEventListener("input", () => {
-    soundVolume = Number(soundSlider.value);
-    soundMuted = soundVolume === 0;
-    localStorage.setItem("sound-volume", String(soundVolume));
-    localStorage.setItem("sound-muted", String(soundMuted));
-    updateSoundControl();
+if (musicSlider) {
+  musicSlider.addEventListener("input", () => {
+    musicVolume = Number(musicSlider.value);
+    if (musicVolume > 0) {
+      lastAudibleVolume = musicVolume;
+      localStorage.setItem("music-volume", String(lastAudibleVolume));
+      void playBackgroundMusic();
+    } else if (backgroundAudio) {
+      backgroundAudio.pause();
+      backgroundAudio.muted = true;
+      backgroundAudio.volume = 0;
+      updateMusicControl();
+    }
   });
-  soundSlider.addEventListener("change", () => playInterfaceTone(300, 0.065));
 }
 
 const createClickSparks = (x, y) => {
@@ -126,16 +141,48 @@ const createClickSparks = (x, y) => {
 };
 
 document.addEventListener("click", (event) => {
-  if (!event.target.closest(".sound-slider")) {
+  if (!event.target.closest(".music-slider")) {
     createClickSparks(event.clientX, event.clientY);
   }
-
-  const interactive = event.target.closest("a, button");
-  if (!interactive || interactive === soundToggle) return;
-  playInterfaceTone(interactive.matches(".button, .print-button") ? 180 : 235);
 });
 
-updateSoundControl();
+updateMusicControl();
+
+const gradientFrameTargets = document.querySelectorAll(
+  [
+    ".site-header",
+    ".brand-icon",
+    ".music-control",
+    ".music-toggle",
+    ".print-button",
+    ".signal-label",
+    ".button-primary",
+    ".board-visual",
+    ".chip",
+    ".component",
+    ".principles span",
+    ".expertise-card",
+    ".card-icon",
+    ".expertise-card li",
+    ".resume-shell",
+    ".tag-list span",
+    ".achievement-badge",
+    ".education-entry",
+    ".interest-row",
+    ".interest-tags span",
+    ".gallery-placeholder",
+    ".contact-panel",
+  ].join(", "),
+);
+
+gradientFrameTargets.forEach((target) => {
+  if (target.querySelector(":scope > .static-gradient-border")) return;
+  const border = document.createElement("span");
+  border.className = "static-gradient-border";
+  border.setAttribute("aria-hidden", "true");
+  target.classList.add("gradient-frame");
+  target.append(border);
+});
 
 if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
   const navLinks = [...siteNav.querySelectorAll("a")];
@@ -161,7 +208,7 @@ if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
 
 if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
   const glowTargets = document.querySelectorAll(
-    ".board-visual, .expertise-card, .resume-shell, .education-entry, .interest-row, .contact-panel",
+    ".board-visual, .expertise-card, .resume-shell, .education-entry, .interest-row, .contact-panel, .music-control",
   );
   let activeGlowTarget;
 
