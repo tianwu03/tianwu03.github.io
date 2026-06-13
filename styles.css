@@ -95,16 +95,15 @@ button {
 }
 
 .site-header {
-  position: absolute;
+  position: sticky;
   z-index: 20;
   top: 16px;
-  left: 50%;
   display: flex;
   width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), var(--max-width));
   align-items: center;
   justify-content: space-between;
   gap: 28px;
-  margin: 0;
+  margin: 16px auto 0;
   padding: 11px 12px 11px 14px;
   border: 1px solid var(--line);
   border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
@@ -114,20 +113,18 @@ button {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.48);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
-  transform: translateX(-50%);
+  transform: translateY(0);
   transition:
-    top 240ms ease,
-    width 240ms ease,
-    border-color 240ms ease,
-    background-color 240ms ease,
-    box-shadow 240ms ease,
-    -webkit-backdrop-filter 240ms ease,
-    backdrop-filter 240ms ease;
+    transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 520ms ease,
+    background-color 520ms ease,
+    box-shadow 520ms ease,
+    -webkit-backdrop-filter 520ms ease,
+    backdrop-filter 520ms ease;
+  will-change: transform, background-color, border-color, box-shadow;
 }
 
 .site-header.is-floating {
-  position: fixed;
-  top: 12px;
   border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
   background: rgba(8, 8, 8, 0.66);
   box-shadow:
@@ -136,6 +133,7 @@ button {
     inset 0 1px 0 rgba(255, 255, 255, 0.08);
   -webkit-backdrop-filter: blur(26px) saturate(145%);
   backdrop-filter: blur(26px) saturate(145%);
+  transform: translateY(-4px);
 }
 
 [data-theme="dark"] .site-header {
@@ -1242,10 +1240,7 @@ h2 {
   .site-header {
     top: 8px;
     width: calc(100% - 20px);
-  }
-
-  .site-header.is-floating {
-    top: 8px;
+    margin-top: 8px;
   }
 
   .print-button,
@@ -1414,6 +1409,7 @@ h2 {
 
   .site-header {
     top: 22px;
+    margin-top: 22px;
     padding: 14px 16px 14px 18px;
     border-radius: 19px;
   }

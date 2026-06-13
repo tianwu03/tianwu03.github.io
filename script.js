@@ -29,11 +29,21 @@ if (printButton) {
 
 if (siteHeader && aboutSection) {
   let ticking = false;
+  let isFloating = siteHeader.classList.contains("is-floating");
 
   const updateHeaderState = () => {
     const triggerOffset = Math.min(window.innerHeight * 0.18, 180);
     const triggerPoint = aboutSection.offsetTop - triggerOffset;
-    siteHeader.classList.toggle("is-floating", window.scrollY >= triggerPoint);
+    const releasePoint = triggerPoint - 80;
+
+    if (!isFloating && window.scrollY >= triggerPoint) {
+      isFloating = true;
+      siteHeader.classList.add("is-floating");
+    } else if (isFloating && window.scrollY <= releasePoint) {
+      isFloating = false;
+      siteHeader.classList.remove("is-floating");
+    }
+
     ticking = false;
   };
 
