@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800;900&family=Oxanium:wght@500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800;900&family=Oxanium:wght@500;600;700;800&display=swap");
 
 :root {
   --page: #eef1eb;
@@ -569,6 +569,30 @@ h2 {
   margin-bottom: 54px;
 }
 
+.profile-slogan {
+  position: relative;
+  display: inline-block;
+  margin: 18px 0 0;
+  padding-left: 34px;
+  color: var(--muted);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(1.35rem, 2vw, 2rem);
+  font-style: italic;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.015em;
+}
+
+.profile-slogan::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+  content: "";
+}
+
 .about,
 .expertise,
 .resume {
@@ -941,6 +965,37 @@ h2 {
 
 .education-entry p {
   margin-bottom: 0;
+}
+
+.interest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.interest-grid article {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-strong);
+}
+
+.interest-grid article > span {
+  color: var(--accent);
+  font-family: var(--font-tech);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+}
+
+.interest-grid h4 {
+  margin: 18px 0 8px;
+  font-size: 0.9rem;
+}
+
+.interest-grid p {
+  margin-bottom: 0;
+  color: var(--muted);
+  font-size: var(--text-xs);
 }
 
 .contact {
@@ -1419,6 +1474,10 @@ h2 {
   .resume-block {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+
+  .interest-grid {
+    grid-template-columns: 1fr;
   }
 }
 
