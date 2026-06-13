@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800;900&family=Oxanium:wght@500;600;700;800&display=swap");
 
 :root {
   --page: #eef1eb;
@@ -16,13 +16,16 @@
   --shadow: 0 24px 70px rgba(16, 31, 24, 0.13);
   --radius-lg: 28px;
   --radius-md: 18px;
-  --max-width: 1220px;
+  --max-width: 1280px;
+  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-display: "Oxanium", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-tech: "Oxanium", "DM Mono", monospace;
   --text-xs: 0.72rem;
   --text-sm: 0.84rem;
   --text-base: 1rem;
   --text-lg: 1.12rem;
-  --heading-1: clamp(3.2rem, 6.6vw, 6rem);
-  --heading-2: clamp(2.35rem, 4.5vw, 4.25rem);
+  --heading-1: clamp(3.1rem, 6vw, 5.6rem);
+  --heading-2: clamp(2.25rem, 4.2vw, 4rem);
 }
 
 [data-theme="dark"] {
@@ -49,7 +52,7 @@ body {
   overflow-x: hidden;
   background: var(--page);
   color: var(--ink);
-  font-family: "Manrope", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.7;
   text-rendering: optimizeLegibility;
@@ -133,8 +136,11 @@ button {
   border-radius: 9px;
   background: var(--dark);
   color: var(--signal);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  transform: skewX(-8deg);
 }
 
 .brand-copy {
@@ -144,7 +150,10 @@ button {
 }
 
 .brand-copy strong {
-  font-size: 0.94rem;
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
 }
 
 .brand-copy small,
@@ -154,8 +163,8 @@ button {
 .board-tag,
 .card-code,
 .resume-block-title span {
-  font-family: "DM Mono", monospace;
-  letter-spacing: 0.1em;
+  font-family: var(--font-tech);
+  letter-spacing: 0.08em;
 }
 
 .brand-copy small {
@@ -168,6 +177,7 @@ button {
   gap: 28px;
   color: var(--muted);
   font-size: 0.82rem;
+  font-family: var(--font-display);
   font-weight: 700;
 }
 
@@ -188,6 +198,7 @@ button {
   border: 1px solid var(--line);
   background: var(--surface-strong);
   font-size: 0.76rem;
+  font-family: var(--font-display);
   font-weight: 700;
 }
 
@@ -263,12 +274,22 @@ p {
   margin-top: 0;
 }
 
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+
 h1 {
   max-width: 760px;
   margin-bottom: 26px;
   font-size: var(--heading-1);
-  line-height: 1.08;
-  letter-spacing: -0.06em;
+  font-style: italic;
+  line-height: 1.03;
+  letter-spacing: -0.065em;
+  white-space: nowrap;
 }
 
 h1 span {
@@ -279,8 +300,9 @@ h1 span {
 h2 {
   margin-bottom: 0;
   font-size: var(--heading-2);
-  line-height: 1.1;
-  letter-spacing: -0.045em;
+  line-height: 1.08;
+  letter-spacing: -0.055em;
+  text-wrap: balance;
 }
 
 .hero-intro {
@@ -310,6 +332,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 10px;
   font-size: 0.86rem;
+  font-family: var(--font-display);
   font-weight: 800;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
@@ -344,7 +367,7 @@ h2 {
 
 .hero-stats dt {
   color: var(--accent);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.62rem;
 }
 
@@ -460,7 +483,7 @@ h2 {
 .chip-copy span,
 .chip-copy small {
   color: #73897e;
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.5rem;
   letter-spacing: 0.12em;
 }
@@ -509,7 +532,7 @@ h2 {
   border: 1px solid #42745f;
   border-radius: 4px;
   color: #83b09d;
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.48rem;
 }
 
@@ -630,7 +653,7 @@ h2 {
   border-radius: 16px;
   background: var(--dark);
   color: var(--signal);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 2rem;
 }
 
@@ -659,7 +682,7 @@ h2 {
   border: 1px solid var(--line);
   border-radius: 5px;
   color: var(--muted);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.55rem;
 }
 
@@ -701,7 +724,7 @@ h2 {
 .resume-side-block h3 {
   margin-bottom: 12px;
   color: var(--signal);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.63rem;
   font-weight: 500;
   letter-spacing: 0.08em;
@@ -825,7 +848,7 @@ h2 {
 .timeline-head span {
   flex-shrink: 0;
   color: var(--muted);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.52rem;
 }
 
@@ -895,8 +918,8 @@ h2 {
 
 .contact-panel {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  gap: 70px;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 60px;
   padding: clamp(44px, 8vw, 90px);
   border-radius: var(--radius-lg);
   background:
@@ -934,7 +957,7 @@ h2 {
   padding: 28px 0 38px;
   border-top: 1px solid var(--line);
   color: var(--muted);
-  font-family: "DM Mono", monospace;
+  font-family: var(--font-tech);
   font-size: 0.58rem;
 }
 
@@ -1124,6 +1147,25 @@ h2 {
   font-size: var(--text-base);
 }
 
+.site-nav a,
+.button,
+.signal-label,
+.board-tag,
+.component,
+.card-code,
+.expertise-card li,
+.tag-list span,
+.hero-stats dd {
+  white-space: nowrap;
+}
+
+.section-heading h2,
+.expertise-card h3,
+.resume-block-title h3,
+.timeline-head h4 {
+  word-break: keep-all;
+}
+
 .expertise-card h3 {
   font-size: 1.35rem;
 }
@@ -1178,7 +1220,7 @@ h2 {
   :root {
     --text-xs: 0.7rem;
     --text-sm: 0.82rem;
-    --heading-1: clamp(2.7rem, 13vw, 4.1rem);
+    --heading-1: clamp(2.35rem, 10.8vw, 4.1rem);
     --heading-2: clamp(2.1rem, 10vw, 3.25rem);
   }
 
@@ -1193,7 +1235,7 @@ h2 {
 
   h1 {
     font-size: var(--heading-1);
-    letter-spacing: -0.045em;
+    letter-spacing: -0.06em;
   }
 
   .section-number {
