@@ -17,6 +17,12 @@
   --radius-lg: 28px;
   --radius-md: 18px;
   --max-width: 1220px;
+  --text-xs: 0.72rem;
+  --text-sm: 0.84rem;
+  --text-base: 1rem;
+  --text-lg: 1.12rem;
+  --heading-1: clamp(3.2rem, 6.6vw, 6rem);
+  --heading-2: clamp(2.35rem, 4.5vw, 4.25rem);
 }
 
 [data-theme="dark"] {
@@ -43,8 +49,11 @@ body {
   overflow-x: hidden;
   background: var(--page);
   color: var(--ink);
-  font-family: "Manrope", "Noto Sans SC", sans-serif;
+  font-family: "Manrope", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: var(--text-base);
   line-height: 1.7;
+  text-rendering: optimizeLegibility;
+  -webkit-text-size-adjust: 100%;
   transition: background-color 220ms ease, color 220ms ease;
 }
 
@@ -68,9 +77,13 @@ button {
   inset: 0;
   opacity: 0.38;
   background-image:
+    linear-gradient(rgba(204, 212, 206, 0.45) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(204, 212, 206, 0.45) 1px, transparent 1px);
+  background-image:
     linear-gradient(color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 1px, transparent 1px);
   background-size: 48px 48px;
+  -webkit-mask-image: linear-gradient(to bottom, black, transparent 82%);
   mask-image: linear-gradient(to bottom, black, transparent 82%);
 }
 
@@ -85,11 +98,19 @@ button {
   gap: 28px;
   margin: 16px auto 0;
   padding: 11px 12px 11px 14px;
+  border: 1px solid var(--line);
   border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
   border-radius: 16px;
+  background: rgba(248, 250, 246, 0.94);
   background: color-mix(in srgb, var(--surface) 83%, transparent);
   box-shadow: 0 12px 40px rgba(15, 33, 25, 0.09);
+  -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
+}
+
+[data-theme="dark"] .site-header {
+  background: rgba(16, 28, 23, 0.94);
+  background: color-mix(in srgb, var(--surface) 83%, transparent);
 }
 
 .brand,
@@ -223,6 +244,7 @@ button {
   height: 7px;
   border-radius: 50%;
   background: #49b67a;
+  box-shadow: 0 0 0 5px rgba(73, 182, 122, 0.2);
   box-shadow: 0 0 0 5px color-mix(in srgb, #49b67a 20%, transparent);
 }
 
@@ -244,9 +266,9 @@ p {
 h1 {
   max-width: 760px;
   margin-bottom: 26px;
-  font-size: clamp(3.6rem, 7.5vw, 6.9rem);
-  line-height: 1.02;
-  letter-spacing: -0.075em;
+  font-size: var(--heading-1);
+  line-height: 1.08;
+  letter-spacing: -0.06em;
 }
 
 h1 span {
@@ -256,9 +278,9 @@ h1 span {
 
 h2 {
   margin-bottom: 0;
-  font-size: clamp(2.6rem, 5vw, 4.8rem);
-  line-height: 1.05;
-  letter-spacing: -0.06em;
+  font-size: var(--heading-2);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
 }
 
 .hero-intro {
@@ -300,6 +322,7 @@ h2 {
   border-color: var(--accent);
   background: var(--accent);
   color: #fff;
+  box-shadow: 0 12px 28px rgba(255, 91, 53, 0.32);
   box-shadow: 0 12px 28px color-mix(in srgb, var(--accent) 32%, transparent);
 }
 
@@ -1049,6 +1072,239 @@ h2 {
     width: calc(100% - 28px);
     flex-direction: column;
     gap: 5px;
+  }
+}
+
+/* Keep text readable and visually consistent across devices. */
+.brand-copy small,
+.signal-label,
+.eyebrow,
+.section-number,
+.board-tag,
+.card-code,
+.resume-block-title span {
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.site-nav,
+.icon-button,
+.print-button,
+.button,
+.hero-stats dd,
+.principles span,
+.expertise-card p,
+.resume-summary,
+.resume-block > p,
+.timeline-head h4,
+.timeline-item p,
+.empty-state strong {
+  font-size: var(--text-sm);
+}
+
+.chip-copy span,
+.chip-copy small,
+.component,
+.expertise-card li,
+.resume-side-block h3,
+.resume-side-block a,
+.resume-side-block > span,
+.tag-list span,
+.resume-note,
+.timeline-head span,
+.skill-matrix div,
+.empty-state span,
+.site-footer {
+  font-size: var(--text-xs);
+}
+
+.hero-intro,
+.about-detail,
+.contact-copy p {
+  font-size: var(--text-base);
+}
+
+.expertise-card h3 {
+  font-size: 1.35rem;
+}
+
+@media (max-width: 1180px) {
+  .site-header {
+    gap: 16px;
+  }
+
+  .site-nav {
+    gap: 18px;
+  }
+
+  .hero {
+    gap: clamp(32px, 5vw, 64px);
+  }
+
+  .resume-block {
+    grid-template-columns: 130px 1fr;
+    gap: 26px;
+  }
+}
+
+@media (max-width: 980px) {
+  .hero {
+    min-height: auto;
+    padding-top: 90px;
+  }
+
+  .hero-copy {
+    max-width: 760px;
+  }
+
+  .board-visual {
+    min-height: min(500px, 70vw);
+  }
+
+  .expertise-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .expertise-card:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .contact-panel {
+    gap: 42px;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --text-xs: 0.7rem;
+    --text-sm: 0.82rem;
+    --heading-1: clamp(2.7rem, 13vw, 4.1rem);
+    --heading-2: clamp(2.1rem, 10vw, 3.25rem);
+  }
+
+  .section {
+    width: min(calc(100% - 28px), var(--max-width));
+    padding: 72px 0;
+  }
+
+  .hero {
+    padding-top: 62px;
+  }
+
+  h1 {
+    font-size: var(--heading-1);
+    letter-spacing: -0.045em;
+  }
+
+  .section-number {
+    position: static;
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  .section-heading {
+    margin-bottom: 38px;
+  }
+
+  .about-layout {
+    gap: 32px;
+  }
+
+  .about-lead p {
+    font-size: clamp(1.45rem, 6.5vw, 1.9rem);
+  }
+
+  .expertise-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .expertise-card:last-child {
+    grid-column: auto;
+  }
+
+  .expertise-card {
+    padding: 24px;
+  }
+
+  .board-visual {
+    min-height: 410px;
+  }
+
+  .resume-shell,
+  .contact-panel {
+    border-radius: 20px;
+  }
+
+  .resume-block {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header {
+    padding: 9px 10px;
+  }
+
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .brand-copy strong {
+    font-size: 0.88rem;
+  }
+
+  .hero-actions,
+  .button {
+    width: 100%;
+  }
+
+  .hero-stats {
+    gap: 8px;
+  }
+
+  .hero-stats div {
+    padding-top: 10px;
+  }
+
+  .hero-stats dd {
+    font-size: 0.74rem;
+  }
+
+  .board-visual {
+    min-height: 350px;
+    border-radius: 20px;
+  }
+
+  .board-tag,
+  .component,
+  .trace {
+    display: none;
+  }
+
+  .chip {
+    width: 190px;
+    min-height: 220px;
+    padding: 20px;
+  }
+
+  .chip img {
+    width: 88px;
+    height: 88px;
+  }
+
+  .principles {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-sidebar,
+  .resume-main {
+    padding: 28px 20px;
+  }
+
+  .contact-panel {
+    padding: 34px 20px;
   }
 }
 
