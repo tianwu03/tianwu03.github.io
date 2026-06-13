@@ -95,29 +95,55 @@ button {
 }
 
 .site-header {
-  position: sticky;
+  position: absolute;
   z-index: 20;
   top: 16px;
+  left: 50%;
   display: flex;
   width: min(calc(100% - var(--page-gutter) - var(--page-gutter)), var(--max-width));
   align-items: center;
   justify-content: space-between;
   gap: 28px;
-  margin: 16px auto 0;
+  margin: 0;
   padding: 11px 12px 11px 14px;
   border: 1px solid var(--line);
   border: 1px solid color-mix(in srgb, var(--line) 75%, transparent);
   border-radius: 16px;
-  background: rgba(12, 12, 12, 0.94);
-  background: color-mix(in srgb, var(--surface) 83%, transparent);
+  background: rgba(12, 12, 12, 0.72);
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.48);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
+  transform: translateX(-50%);
+  transition:
+    top 240ms ease,
+    width 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease,
+    box-shadow 240ms ease,
+    -webkit-backdrop-filter 240ms ease,
+    backdrop-filter 240ms ease;
+}
+
+.site-header.is-floating {
+  position: fixed;
+  top: 12px;
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  background: rgba(8, 8, 8, 0.66);
+  box-shadow:
+    0 16px 50px rgba(0, 0, 0, 0.58),
+    0 0 30px rgba(255, 42, 42, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  -webkit-backdrop-filter: blur(26px) saturate(145%);
+  backdrop-filter: blur(26px) saturate(145%);
 }
 
 [data-theme="dark"] .site-header {
-  background: rgba(8, 8, 8, 0.94);
-  background: color-mix(in srgb, var(--surface) 83%, transparent);
+  background: rgba(8, 8, 8, 0.72);
+}
+
+[data-theme="dark"] .site-header.is-floating {
+  background: rgba(4, 4, 4, 0.66);
 }
 
 .brand,
@@ -1216,7 +1242,10 @@ h2 {
   .site-header {
     top: 8px;
     width: calc(100% - 20px);
-    margin-top: 8px;
+  }
+
+  .site-header.is-floating {
+    top: 8px;
   }
 
   .print-button,
@@ -1385,7 +1414,6 @@ h2 {
 
   .site-header {
     top: 22px;
-    margin-top: 22px;
     padding: 14px 16px 14px 18px;
     border-radius: 19px;
   }

@@ -1,6 +1,8 @@
 const themeToggle = document.querySelector(".theme-toggle");
 const printButton = document.querySelector(".print-button");
 const year = document.querySelector("#current-year");
+const siteHeader = document.querySelector(".site-header");
+const aboutSection = document.querySelector("#about");
 
 if (year) {
   year.textContent = new Date().getFullYear();
@@ -23,6 +25,31 @@ if (themeToggle) {
 
 if (printButton) {
   printButton.addEventListener("click", () => window.print());
+}
+
+if (siteHeader && aboutSection) {
+  let ticking = false;
+
+  const updateHeaderState = () => {
+    const triggerOffset = Math.min(window.innerHeight * 0.18, 180);
+    const triggerPoint = aboutSection.offsetTop - triggerOffset;
+    siteHeader.classList.toggle("is-floating", window.scrollY >= triggerPoint);
+    ticking = false;
+  };
+
+  const requestHeaderUpdate = () => {
+    if (!ticking) {
+      window.requestAnimationFrame(updateHeaderState);
+      ticking = true;
+    }
+  };
+
+  updateHeaderState();
+  window.addEventListener("scroll", requestHeaderUpdate, { passive: true });
+  window.addEventListener("resize", requestHeaderUpdate);
+  window.addEventListener("hashchange", requestHeaderUpdate);
+  window.addEventListener("pageshow", requestHeaderUpdate);
+  window.addEventListener("load", requestHeaderUpdate);
 }
 
 const revealElements = document.querySelectorAll(".reveal");
