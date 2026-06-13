@@ -1282,18 +1282,21 @@ h2 {
 .pointer-edge-light {
   position: absolute;
   z-index: 8;
-  inset: -1px;
-  padding: 1px;
+  inset: -2px;
+  padding: 2px;
   border-radius: inherit;
   background:
     radial-gradient(
-      240px circle at var(--edge-x) var(--edge-y),
-      rgba(255, 255, 255, 0.95),
-      rgba(255, 42, 42, 0.78) 24%,
-      rgba(161, 0, 0, 0.38) 48%,
-      transparent 72%
+      340px circle at var(--edge-x) var(--edge-y),
+      #fff 0%,
+      rgba(255, 42, 42, 1) 20%,
+      rgba(255, 42, 42, 0.72) 42%,
+      rgba(150, 0, 0, 0.34) 66%,
+      transparent 84%
     );
-  filter: drop-shadow(0 0 10px rgba(255, 42, 42, 0.5));
+  filter:
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.25))
+    drop-shadow(0 0 18px rgba(255, 42, 42, 0.78));
   opacity: var(--edge-opacity);
   pointer-events: none;
   transition: opacity 360ms ease;
@@ -1305,7 +1308,10 @@ h2 {
 }
 
 .edge-glow.is-edge-active {
-  border-color: color-mix(in srgb, var(--accent) 48%, var(--line));
+  border-color: color-mix(in srgb, var(--accent) 78%, #fff);
+  box-shadow:
+    var(--shadow),
+    0 0 26px rgba(255, 42, 42, 0.14);
 }
 
 .click-spark {
@@ -1313,15 +1319,17 @@ h2 {
   z-index: 100;
   top: 0;
   left: 0;
-  width: 3px;
-  height: 10px;
+  width: var(--spark-width, 3px);
+  height: var(--spark-length, 12px);
   border-radius: 99px;
   background: var(--spark-color, var(--accent));
-  box-shadow: 0 0 10px var(--spark-color, var(--accent));
+  box-shadow:
+    0 0 6px var(--spark-color, var(--accent)),
+    0 0 16px color-mix(in srgb, var(--spark-color, var(--accent)) 70%, transparent);
   opacity: 0;
   pointer-events: none;
   transform: translate(-50%, -50%) rotate(var(--spark-angle)) translateY(0) scaleY(0.6);
-  animation: circuit-spark 560ms cubic-bezier(0.2, 0.75, 0.35, 1) forwards;
+  animation: circuit-spark var(--spark-duration, 620ms) cubic-bezier(0.2, 0.75, 0.35, 1) forwards;
 }
 
 @keyframes circuit-spark {
@@ -1338,7 +1346,81 @@ h2 {
   }
 }
 
+body.is-booting {
+  overflow: hidden;
+}
+
+.is-booting .site-header,
+.is-booting .hero-copy > *,
+.is-booting .board-visual {
+  opacity: 0;
+}
+
+.is-booting .site-header {
+  transform: translateY(-24px) scale(0.985);
+}
+
+.is-booting .hero-copy > * {
+  transform: translateY(28px);
+  filter: blur(6px);
+}
+
+.is-booting .board-visual {
+  transform: translateX(38px) scale(0.965);
+  filter: blur(9px) brightness(0.55);
+}
+
+body.is-booted .site-header,
+body.is-booted .hero-copy > *,
+body.is-booted .board-visual {
+  opacity: 1;
+  filter: none;
+}
+
+body.is-booted .site-header {
+  transform: translateY(0);
+  transition-delay: 60ms;
+}
+
+body.is-booted .hero-copy > * {
+  transform: translateY(0);
+  transition:
+    opacity 680ms ease,
+    transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 680ms ease;
+}
+
+body.is-booted .hero-copy > :nth-child(1) { transition-delay: 180ms; }
+body.is-booted .hero-copy > :nth-child(2) { transition-delay: 260ms; }
+body.is-booted .hero-copy > :nth-child(3) { transition-delay: 340ms; }
+body.is-booted .hero-copy > :nth-child(4) { transition-delay: 460ms; }
+body.is-booted .hero-copy > :nth-child(5) { transition-delay: 560ms; }
+body.is-booted .hero-copy > :nth-child(6) { transition-delay: 660ms; }
+
+body.is-booted .board-visual {
+  transform: translateX(0) scale(1);
+  transition:
+    opacity 900ms 420ms ease,
+    transform 1050ms 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 900ms 420ms ease;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  body.is-booting {
+    overflow: auto;
+  }
+
+  .is-booting .site-header,
+  .is-booting .hero-copy > *,
+  .is-booting .board-visual,
+  body.is-booted .site-header,
+  body.is-booted .hero-copy > *,
+  body.is-booted .board-visual {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+
   .site-nav a {
     transform: none;
     transition: color 160ms ease, text-shadow 160ms ease;

@@ -9,6 +9,16 @@ const soundSlider = document.querySelector(".sound-slider");
 const soundValue = document.querySelector(".sound-value");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+if (!reduceMotion && window.scrollY < 80) {
+  document.body.classList.add("is-booting");
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      document.body.classList.add("is-booted");
+      window.setTimeout(() => document.body.classList.remove("is-booting"), 1750);
+    });
+  });
+}
+
 if (year) {
   year.textContent = new Date().getFullYear();
 }
@@ -89,17 +99,26 @@ const createClickSparks = (x, y) => {
   if (reduceMotion) return;
 
   const fragment = document.createDocumentFragment();
-  for (let index = 0; index < 7; index += 1) {
+  const sparkCount = 10 + Math.floor(Math.random() * 7);
+
+  for (let index = 0; index < sparkCount; index += 1) {
     const spark = document.createElement("span");
-    const angle = index * (360 / 7) + Math.random() * 18;
-    const distance = 18 + Math.random() * 24;
+    const angle = Math.random() * 360;
+    const distance = 28 + Math.random() * 52;
+    const length = 7 + Math.random() * 18;
+    const width = 2 + Math.random() * 2;
+    const duration = 430 + Math.random() * 360;
+    const isWhite = Math.random() < 0.38;
 
     spark.className = "click-spark";
     spark.style.left = `${x}px`;
     spark.style.top = `${y}px`;
     spark.style.setProperty("--spark-angle", `${angle}deg`);
     spark.style.setProperty("--spark-distance", `${distance}px`);
-    spark.style.setProperty("--spark-color", index % 3 === 0 ? "#ffffff" : "#ff2a2a");
+    spark.style.setProperty("--spark-length", `${length}px`);
+    spark.style.setProperty("--spark-width", `${width}px`);
+    spark.style.setProperty("--spark-duration", `${duration}ms`);
+    spark.style.setProperty("--spark-color", isWhite ? "#ffffff" : "#ff2a2a");
     spark.addEventListener("animationend", () => spark.remove(), { once: true });
     fragment.append(spark);
   }
@@ -168,13 +187,13 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const edgeDistance = Math.min(x, y, rect.width - x, rect.height - y);
-      const sensitivity = Math.min(110, Math.max(42, Math.min(rect.width, rect.height) * 0.24));
-      const proximity = Math.max(0, Math.min(1, 1 - edgeDistance / sensitivity));
+      const sensitivity = Math.min(190, Math.max(78, Math.min(rect.width, rect.height) * 0.42));
+      const proximity = Math.max(0, Math.min(1, 1.15 - edgeDistance / sensitivity));
 
       target.style.setProperty("--edge-x", `${x}px`);
       target.style.setProperty("--edge-y", `${y}px`);
       target.style.setProperty("--edge-opacity", proximity.toFixed(3));
-      target.classList.toggle("is-edge-active", proximity > 0.1);
+      target.classList.toggle("is-edge-active", proximity > 0.04);
     });
 
     target.addEventListener("pointerleave", () => {
