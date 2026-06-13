@@ -643,7 +643,7 @@ h2 {
 
 .expertise-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -1427,6 +1427,10 @@ h2 {
     padding: 34px;
   }
 
+  .expertise-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
   .contact-panel {
     padding: clamp(70px, 7vw, 120px);
   }
@@ -1467,10 +1471,6 @@ h2 {
 
   .expertise-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .expertise-card:last-child {
-    grid-column: 1 / -1;
   }
 
   .contact-panel {
