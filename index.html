@@ -9,8 +9,8 @@
     />
     <meta name="theme-color" content="#060606" />
     <title>顾峥 | 硬件工程师</title>
-    <link rel="stylesheet" href="./styles.css?v=corner-fix-1" />
-    <script src="./script.js?v=corner-fix-1" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=language-dock-3" />
+    <script src="./script.js?v=language-dock-3" defer></script>
   </head>
   <body>
     <div class="circuit-background" aria-hidden="true"></div>
@@ -31,6 +31,14 @@
       </nav>
 
       <div class="header-actions">
+        <div class="language-control" role="group" aria-label="语言选择">
+          <button class="language-option" type="button" data-language="zh" data-label="中文" aria-pressed="true">
+            中
+          </button>
+          <button class="language-option" type="button" data-language="en" data-label="English" aria-pressed="false">
+            EN
+          </button>
+        </div>
         <div class="music-control">
           <audio
             class="background-audio"
@@ -41,7 +49,7 @@
             playsinline
           ></audio>
           <button class="music-toggle" type="button" aria-label="播放背景音乐" aria-pressed="false">
-            PLAY
+            播放
           </button>
           <a
             class="music-meta"
@@ -61,7 +69,7 @@
             value="0"
             aria-label="背景音乐音量"
           />
-          <span class="music-value" aria-live="polite">MUTE</span>
+          <span class="music-value" aria-live="polite">静音</span>
         </div>
         <button class="print-button" type="button">打印简历</button>
       </div>
