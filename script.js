@@ -8,6 +8,10 @@ const musicToggle = document.querySelector(".music-toggle");
 const musicSlider = document.querySelector(".music-slider");
 const musicValue = document.querySelector(".music-value");
 const backgroundAudio = document.querySelector(".background-audio");
+const musicTitle = document.querySelector(".music-meta strong");
+const musicLink = document.querySelector(".music-meta");
+const previousTrackButton = document.querySelector(".music-previous");
+const nextTrackButton = document.querySelector(".music-next");
 const languageToggle = document.querySelector(".language-toggle");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -216,6 +220,12 @@ if (printButton) {
 let musicVolume = 50;
 let lastAudibleVolume = Number(localStorage.getItem("music-volume") ?? 50);
 if (!Number.isFinite(lastAudibleVolume) || lastAudibleVolume <= 0) lastAudibleVolume = 50;
+const playlist = [
+  { title: "Travelers", id: "1903408778" },
+  { title: "14.3 Billion Years", id: "1903408779" },
+  { title: "Outer Wilds", id: "1903401563" },
+];
+let currentTrackIndex = 2;
 
 const updateMusicControl = (status) => {
   musicVolume = Math.min(100, Math.max(0, musicVolume));
@@ -268,7 +278,7 @@ const applyLanguage = (language) => {
   siteNav?.setAttribute("aria-label", meta.nav);
   printButton?.setAttribute("aria-label", meta.print);
   musicSlider?.setAttribute("aria-label", labels.volumeAria);
-  document.querySelector(".music-meta")?.setAttribute("aria-label", labels.songAria);
+  musicLink?.setAttribute("aria-label", `${currentLanguage === "en" ? "Open" : "在网易云音乐打开"} ${playlist[currentTrackIndex].title}`);
 
   updateMusicControl();
 };
@@ -291,12 +301,36 @@ const playBackgroundMusic = async () => {
   }
 };
 
+const selectTrack = (index, shouldPlay = false) => {
+  if (!backgroundAudio) return;
+
+  currentTrackIndex = (index + playlist.length) % playlist.length;
+  const track = playlist[currentTrackIndex];
+  backgroundAudio.src = `https://music.163.com/song/media/outer/url?id=${track.id}.mp3`;
+  backgroundAudio.load();
+  backgroundAudio.volume = musicVolume / 100;
+  backgroundAudio.muted = !shouldPlay;
+
+  if (musicTitle) musicTitle.textContent = `歌名——${track.title}`;
+  if (musicLink) {
+    musicLink.href = `https://music.163.com/#/song?id=${track.id}`;
+    musicLink.setAttribute("aria-label", `在网易云音乐打开 ${track.title}`);
+  }
+
+  if (shouldPlay) {
+    void playBackgroundMusic();
+  } else {
+    updateMusicControl();
+  }
+};
+
 if (backgroundAudio) {
   backgroundAudio.muted = true;
   backgroundAudio.volume = musicVolume / 100;
   backgroundAudio.addEventListener("play", () => updateMusicControl());
   backgroundAudio.addEventListener("pause", () => updateMusicControl());
   backgroundAudio.addEventListener("error", () => updateMusicControl("NETEASE"));
+  backgroundAudio.addEventListener("ended", () => selectTrack(currentTrackIndex + 1, true));
 }
 
 if (musicToggle) {
@@ -328,6 +362,14 @@ if (musicSlider) {
     }
   });
 }
+
+previousTrackButton?.addEventListener("click", () => {
+  selectTrack(currentTrackIndex - 1, Boolean(backgroundAudio && !backgroundAudio.paused && !backgroundAudio.muted));
+});
+
+nextTrackButton?.addEventListener("click", () => {
+  selectTrack(currentTrackIndex + 1, Boolean(backgroundAudio && !backgroundAudio.paused && !backgroundAudio.muted));
+});
 
 const createClickSparks = (x, y) => {
   if (reduceMotion) return;

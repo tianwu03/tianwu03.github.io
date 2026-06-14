@@ -231,7 +231,7 @@ button {
   height: 38px;
   flex: 0 0 44px;
   place-items: center;
-  margin-right: 5px;
+  margin-left: 5px;
   padding: 0;
   border: 1px solid color-mix(in srgb, var(--accent) 44%, var(--line));
   border-radius: 10px;
@@ -279,7 +279,8 @@ button {
   --music-level: 0%;
   display: flex;
   height: 46px;
-  min-width: 242px;
+  width: 326px;
+  min-width: 326px;
   align-items: center;
   gap: 8px;
   padding: 5px 10px 5px 6px;
@@ -303,8 +304,8 @@ button {
 
 .music-toggle {
   display: grid;
-  width: 48px;
-  height: 34px;
+  width: 64px;
+  height: 38px;
   flex: 0 0 auto;
   place-items: center;
   padding: 0;
@@ -313,7 +314,7 @@ button {
   background: var(--accent-soft);
   color: #fff;
   font-family: var(--font-tech);
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   transition: background-color 180ms ease, color 180ms ease;
@@ -321,6 +322,35 @@ button {
 
 .music-toggle[aria-pressed="true"] {
   background: var(--accent);
+  color: #fff;
+}
+
+.music-transport {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.music-skip {
+  display: grid;
+  width: 25px;
+  height: 30px;
+  place-items: center;
+  padding: 0 0 3px;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
+  color: var(--muted);
+  font-family: var(--font-tech);
+  font-size: 1.05rem;
+  line-height: 1;
+  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.music-skip:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
   color: #fff;
 }
 
@@ -342,7 +372,6 @@ button {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 4px;
   line-height: 1;
 }
 
@@ -356,7 +385,7 @@ button {
 .music-meta strong {
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 0.5rem;
+  font-size: 0.48rem;
   letter-spacing: 0.015em;
 }
 
@@ -1478,6 +1507,7 @@ h2 {
 .button:focus-visible,
 .language-toggle:focus-visible,
 .music-toggle:focus-visible,
+.music-skip:focus-visible,
 .music-slider:focus-visible,
 .print-button:focus-visible,
 .site-nav a:focus-visible {
@@ -1597,27 +1627,27 @@ h2 {
   position: absolute;
   z-index: 10;
   inset: 0;
-  border: var(--effect-stroke) solid rgba(255, 255, 255, 0.98);
+  border: var(--effect-stroke) solid rgba(255, 255, 255, 0.9);
   border-radius: inherit;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.68),
-    0 0 8px rgba(255, 255, 255, 0.72),
-    0 0 16px rgba(255, 42, 42, 0.72);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.54),
+    0 0 6px rgba(255, 255, 255, 0.5),
+    0 0 12px rgba(255, 42, 42, 0.56);
   mask-image:
     conic-gradient(
       from var(--cursor-angle) at center,
-      #000 2.5%,
-      transparent 10%,
-      transparent 90%,
-      #000 97.5%
+      #000 0.5%,
+      transparent 2.5%,
+      transparent 97.5%,
+      #000 99.5%
     );
   -webkit-mask-image:
     conic-gradient(
       from var(--cursor-angle) at center,
-      #000 2.5%,
-      transparent 10%,
-      transparent 90%,
-      #000 97.5%
+      #000 0.5%,
+      transparent 2.5%,
+      transparent 97.5%,
+      #000 99.5%
     );
   mix-blend-mode: plus-lighter;
   opacity: var(--edge-opacity);
@@ -2033,6 +2063,12 @@ body:not(.is-booting):not(.is-booted) .board-visual {
     min-width: 360px;
   }
 
+  .component {
+    padding: 8px 13px;
+    border-width: 2px;
+    font-size: 0.88rem;
+  }
+
   .language-toggle {
     width: 50px;
     height: 46px;
@@ -2122,6 +2158,7 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   }
 
   .music-control {
+    width: 286px;
     min-width: 210px;
   }
 
@@ -2184,6 +2221,7 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   }
 
   .music-control {
+    width: 210px;
     min-width: 160px;
   }
 
@@ -2282,6 +2320,7 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   }
 
   .music-control {
+    width: 190px;
     min-width: 0;
     gap: 6px;
     padding-right: 7px;
@@ -2290,7 +2329,7 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   .language-toggle {
     width: 38px;
     flex-basis: 38px;
-    margin-right: 1px;
+    margin-left: 1px;
   }
 
   .music-slider {
