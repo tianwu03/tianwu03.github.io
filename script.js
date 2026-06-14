@@ -8,8 +8,7 @@ const musicToggle = document.querySelector(".music-toggle");
 const musicSlider = document.querySelector(".music-slider");
 const musicValue = document.querySelector(".music-value");
 const backgroundAudio = document.querySelector(".background-audio");
-const languageControl = document.querySelector(".language-control");
-const languageOptions = [...document.querySelectorAll(".language-option")];
+const languageToggle = document.querySelector(".language-toggle");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const translationPairs = new Map(Object.entries({
@@ -46,6 +45,9 @@ const translationPairs = new Map(Object.entries({
   "具备 ToF 相机接入经验，覆盖 iToF / dToF 方案适配、板级调试、系统联调与问题闭环。": "Experienced in ToF camera integration, including iToF/dToF adaptation, board bring-up, system integration, and issue closure.",
   "系统联调与验证": "System Integration & Validation",
   "个人简历": "Resume",
+  "HDI 层叠": "HDI STACKUP",
+  "感知域": "SENSING DOMAINS",
+  "优秀员工": "OUTSTANDING",
   "硬件开发工程师，聚焦高阶 HDI、芯片级感知硬件、多传感器融合与产品工程化。": "Hardware development engineer focused on advanced HDI, chip-level sensing hardware, multi-sensor fusion, and product engineering.",
   "工具与方向": "Tools & Focus",
   "网站仅展示适合公开的履历信息，当前工作项目与具体成果将按公开范围持续补充。": "This site presents publicly shareable experience. Current projects and outcomes will be added within appropriate disclosure limits.",
@@ -96,8 +98,7 @@ const translationPairs = new Map(Object.entries({
   "快速原型": "Rapid Prototyping",
   "焊接调试": "Soldering & Debug",
   "闭环验证": "Closed-loop Validation",
-  "硬件原型与调试": "Hardware Prototypes & Debug",
-  "王耳德 · NETEASE": "Wang Erde · NETEASE"
+  "硬件原型与调试": "Hardware Prototypes & Debug"
 }));
 
 const normalizeCopy = (value) => value.replace(/\s+/g, " ").trim();
@@ -125,6 +126,7 @@ const localeMeta = {
     title: "顾峥 | 硬件工程师",
     description: "顾峥的个人主页与硬件开发工程师简历，聚焦高阶 HDI、芯片级开发、多传感器融合与深度视觉。",
     group: "语言选择",
+    switchLanguage: "切换至英文",
     home: "返回首页",
     nav: "主导航",
     print: "打印简历",
@@ -134,6 +136,7 @@ const localeMeta = {
     title: "Gu Zheng | Hardware Engineer",
     description: "Gu Zheng's hardware engineering portfolio, focused on advanced HDI, chip-level development, multi-sensor fusion, and depth vision.",
     group: "Language selector",
+    switchLanguage: "Switch to Chinese",
     home: "Back to home",
     nav: "Main navigation",
     print: "Print resume",
@@ -149,6 +152,7 @@ const musicLocale = {
     mute: "静音",
     click: "点击",
     source: "音源",
+    volume: "音量",
     playAria: "播放背景音乐",
     pauseAria: "暂停背景音乐",
     volumeAria: "背景音乐音量",
@@ -160,6 +164,7 @@ const musicLocale = {
     mute: "MUTE",
     click: "CLICK",
     source: "SOURCE",
+    volume: "VOL",
     playAria: "Play background music",
     pauseAria: "Pause background music",
     volumeAria: "Background music volume",
@@ -231,7 +236,7 @@ const updateMusicControl = (status) => {
     musicSlider.value = String(musicVolume);
   }
   if (musicValue) {
-    musicValue.textContent = statusLabel ?? (musicVolume === 0 ? labels.mute : `${Math.round(musicVolume)}%`);
+    musicValue.textContent = statusLabel ?? `${labels.volume} ${musicVolume === 0 ? labels.mute : `${Math.round(musicVolume)}%`}`;
   }
   if (musicToggle) {
     musicToggle.textContent = isPlaying ? labels.pause : labels.play;
@@ -254,16 +259,16 @@ const applyLanguage = (language) => {
     node.nodeValue = `${prefix}${currentLanguage === "en" ? en : zh}${suffix}`;
   });
 
-  languageControl?.setAttribute("aria-label", meta.group);
+  if (languageToggle) {
+    languageToggle.textContent = currentLanguage === "en" ? "中" : "EN";
+    languageToggle.setAttribute("aria-label", meta.switchLanguage);
+    languageToggle.setAttribute("aria-pressed", String(currentLanguage === "en"));
+  }
   document.querySelector(".brand")?.setAttribute("aria-label", meta.home);
   siteNav?.setAttribute("aria-label", meta.nav);
   printButton?.setAttribute("aria-label", meta.print);
   musicSlider?.setAttribute("aria-label", labels.volumeAria);
   document.querySelector(".music-meta")?.setAttribute("aria-label", labels.songAria);
-
-  languageOptions.forEach((option) => {
-    option.setAttribute("aria-pressed", String(option.dataset.language === currentLanguage));
-  });
 
   updateMusicControl();
 };
@@ -360,24 +365,10 @@ document.addEventListener("click", (event) => {
   }
 });
 
-languageOptions.forEach((option) => {
-  option.addEventListener("click", () => applyLanguage(option.dataset.language));
-});
-
-if (languageControl && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
-  const resetLanguageDock = () => {
-    languageOptions.forEach((option) => option.style.setProperty("--lang-scale", "1"));
-  };
-
-  languageControl.addEventListener("pointermove", (event) => {
-    languageOptions.forEach((option) => {
-      const rect = option.getBoundingClientRect();
-      const center = rect.left + rect.width / 2;
-      const proximity = Math.max(0, 1 - Math.abs(event.clientX - center) / 70);
-      option.style.setProperty("--lang-scale", String(1 + proximity * 0.16));
-    });
+if (languageToggle) {
+  languageToggle.addEventListener("click", () => {
+    applyLanguage(currentLanguage === "zh" ? "en" : "zh");
   });
-  languageControl.addEventListener("pointerleave", resetLanguageDock);
 }
 
 applyLanguage(currentLanguage);
@@ -469,10 +460,13 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const proximity = 0.24 + Math.pow(1 - edgeRatio, 1.7) * 0.76;
       const surfaceOpacity = 0.32 + proximity * 0.24;
       const glowRadius = Math.max(460, edgeDistance * 3 + 300);
+      const whiteRatio = Math.pow(1 - edgeRatio, 2.1);
+      const edgeGreenBlue = Math.round(42 + whiteRatio * 213);
 
       target.style.setProperty("--edge-x", `${x}px`);
       target.style.setProperty("--edge-y", `${y}px`);
       target.style.setProperty("--edge-radius", `${glowRadius}px`);
+      target.style.setProperty("--edge-color", `rgb(255 ${edgeGreenBlue} ${edgeGreenBlue})`);
       target.style.setProperty("--edge-opacity", proximity.toFixed(3));
       target.style.setProperty("--surface-opacity", surfaceOpacity.toFixed(3));
       target.classList.add("is-edge-active");
