@@ -311,7 +311,7 @@ const selectTrack = (index, shouldPlay = false) => {
   backgroundAudio.volume = musicVolume / 100;
   backgroundAudio.muted = !shouldPlay;
 
-  if (musicTitle) musicTitle.textContent = `歌名——${track.title}`;
+  if (musicTitle) musicTitle.textContent = `${track.title}——Outer Wilds`;
   if (musicLink) {
     musicLink.href = `https://music.163.com/#/song?id=${track.id}`;
     musicLink.setAttribute("aria-label", `在网易云音乐打开 ${track.title}`);
@@ -505,7 +505,7 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const edgeProximity = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
       const cursorAngle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
       const proximity = 0.08 + Math.pow(edgeProximity, 2.2) * 0.92;
-      const surfaceOpacity = 0.32 + proximity * 0.24;
+      const surfaceOpacity = 0.38 + proximity * 0.27;
       const glowRadius = Math.max(460, Math.min(rect.width, rect.height) * 0.72);
 
       target.style.setProperty("--edge-x", `${x}px`);

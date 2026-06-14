@@ -293,7 +293,6 @@ button {
 .music-control:hover,
 .music-control:focus-within,
 .music-control.is-playing {
-  transform: translateY(-2px);
   background: color-mix(in srgb, var(--accent-soft) 34%, var(--surface-strong));
   box-shadow: 0 0 28px rgba(255, 42, 42, 0.16);
 }
@@ -317,12 +316,19 @@ button {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  transition: background-color 180ms ease, color 180ms ease;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .music-toggle[aria-pressed="true"] {
   background: var(--accent);
   color: #fff;
+}
+
+.music-toggle:hover {
+  background: #fff;
+  color: #090909;
+  box-shadow: 0 7px 18px rgba(255, 42, 42, 0.28);
+  transform: translateY(-3px);
 }
 
 .music-transport {
@@ -345,13 +351,15 @@ button {
   font-family: var(--font-tech);
   font-size: 1.05rem;
   line-height: 1;
-  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+  transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
 }
 
 .music-skip:hover {
-  border-color: var(--accent);
-  background: var(--accent-soft);
-  color: #fff;
+  border-color: #fff;
+  background: #fff;
+  color: #090909;
+  box-shadow: 0 7px 16px rgba(255, 42, 42, 0.24);
+  transform: translateY(-3px);
 }
 
 .music-info {
@@ -1612,8 +1620,8 @@ h2 {
   background:
     radial-gradient(
       280px circle at var(--edge-x) var(--edge-y),
-      rgba(255, 255, 255, 0.26) 0%,
-      rgba(255, 88, 88, 0.2) 18%,
+      rgba(255, 255, 255, 0.34) 0%,
+      rgba(255, 112, 112, 0.23) 18%,
       rgba(255, 42, 42, 0.1) 42%,
       transparent 72%
     );
@@ -2158,8 +2166,40 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   }
 
   .music-control {
-    width: 286px;
-    min-width: 210px;
+    width: 276px;
+    min-width: 276px;
+    gap: 6px;
+    padding-right: 8px;
+  }
+
+  .music-transport {
+    gap: 3px;
+  }
+
+  .music-toggle {
+    width: 58px;
+  }
+
+  .music-skip {
+    width: 22px;
+  }
+
+  .music-row {
+    gap: 5px;
+  }
+
+  .music-slider {
+    width: 58px;
+  }
+
+  .music-slider:hover,
+  .music-slider:focus-visible {
+    width: 64px;
+  }
+
+  .music-value {
+    min-width: 58px;
+    font-size: 0.62rem;
   }
 
   .music-meta small {
@@ -2226,6 +2266,10 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   }
 
   .music-meta {
+    display: none;
+  }
+
+  .music-value {
     display: none;
   }
 
@@ -2307,7 +2351,12 @@ body:not(.is-booting):not(.is-booted) .board-visual {
 
 @media (max-width: 480px) {
   .site-header {
+    gap: 8px;
     padding: 9px 10px;
+  }
+
+  .brand {
+    gap: 0;
   }
 
   .brand-icon {
@@ -2315,14 +2364,22 @@ body:not(.is-booting):not(.is-booted) .board-visual {
     height: 36px;
   }
 
-  .brand-copy strong {
-    font-size: 0.88rem;
+  .brand-copy {
+    display: none;
+  }
+
+  .header-actions {
+    min-width: 0;
+    flex: 1 1 auto;
+    justify-content: flex-end;
+    gap: 5px;
   }
 
   .music-control {
-    width: 190px;
+    width: 180px;
+    flex: 0 1 180px;
     min-width: 0;
-    gap: 6px;
+    gap: 4px;
     padding-right: 7px;
   }
 
@@ -2333,12 +2390,12 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   }
 
   .music-slider {
-    width: 52px;
+    width: 48px;
   }
 
   .music-slider:hover,
   .music-slider:focus-visible {
-    width: 56px;
+    width: 52px;
   }
 
   .music-value {
