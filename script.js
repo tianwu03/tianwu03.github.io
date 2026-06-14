@@ -215,13 +215,16 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
       const edgeDistance = Math.min(x, y, rect.width - x, rect.height - y);
-      const sensitivity = Math.min(190, Math.max(78, Math.min(rect.width, rect.height) * 0.42));
-      const proximity = Math.max(0, Math.min(1, 1.15 - edgeDistance / sensitivity));
+      const centerDistance = Math.max(1, Math.min(rect.width, rect.height) / 2);
+      const edgeRatio = Math.min(1, edgeDistance / centerDistance);
+      const proximity = 0.13 + Math.pow(1 - edgeRatio, 1.7) * 0.87;
+      const glowRadius = Math.max(340, edgeDistance + 260);
 
       target.style.setProperty("--edge-x", `${x}px`);
       target.style.setProperty("--edge-y", `${y}px`);
+      target.style.setProperty("--edge-radius", `${glowRadius}px`);
       target.style.setProperty("--edge-opacity", proximity.toFixed(3));
-      target.classList.toggle("is-edge-active", proximity > 0.04);
+      target.classList.add("is-edge-active");
     });
 
     target.addEventListener("pointerleave", () => {
