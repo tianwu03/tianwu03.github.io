@@ -644,21 +644,22 @@ h2 {
 .board-visual::before,
 .board-visual::after {
   position: absolute;
-  width: 14px;
-  height: 14px;
+  width: clamp(10px, 3.2%, 18px);
+  height: auto;
+  aspect-ratio: 1;
   border: 2px solid #ff6b6b;
   border-radius: 50%;
   content: "";
 }
 
 .board-visual::before {
-  top: 24px;
-  left: 24px;
+  top: clamp(14px, 4.5%, 30px);
+  left: clamp(14px, 5%, 32px);
 }
 
 .board-visual::after {
-  right: 24px;
-  bottom: 24px;
+  right: clamp(14px, 5%, 32px);
+  bottom: clamp(14px, 4.5%, 30px);
 }
 
 .board-tag {
@@ -668,13 +669,13 @@ h2 {
 }
 
 .board-tag-top {
-  top: 27px;
-  right: 32px;
+  top: clamp(16px, 4.8%, 34px);
+  right: clamp(18px, 7%, 48px);
 }
 
 .board-tag-bottom {
-  bottom: 26px;
-  left: 30px;
+  bottom: clamp(16px, 4.8%, 34px);
+  left: clamp(18px, 7%, 48px);
 }
 
 .chip {
@@ -747,38 +748,40 @@ h2 {
 
 .trace {
   position: absolute;
+  z-index: 2;
   border-color: var(--accent);
   border-style: solid;
   opacity: 0.55;
 }
 
 .trace-a {
-  top: 110px;
+  top: 20%;
   left: 0;
-  width: 165px;
-  height: 95px;
+  width: 43%;
+  height: 18%;
   border-width: 1px 1px 0 0;
 }
 
 .trace-b {
   right: 0;
-  bottom: 108px;
-  width: 160px;
-  height: 110px;
+  bottom: 18%;
+  width: 42%;
+  height: 20%;
   border-width: 0 0 1px 1px;
 }
 
 .trace-c {
-  right: 55px;
+  right: 14%;
   top: 0;
-  width: 80px;
-  height: 145px;
+  width: 21%;
+  height: 26%;
   border-width: 0 0 1px 1px;
 }
 
 .component {
   position: absolute;
-  padding: 5px 8px;
+  z-index: 4;
+  padding: clamp(3px, 0.75vw, 6px) clamp(6px, 1.1vw, 10px);
   border: 1px solid #7a2929;
   border-radius: 4px;
   color: #d68b8b;
@@ -787,23 +790,23 @@ h2 {
 }
 
 .component-a {
-  top: 160px;
-  left: 48px;
+  top: 28%;
+  left: clamp(12px, 11%, 72px);
 }
 
 .component-b {
-  right: 46px;
-  top: 210px;
+  right: clamp(12px, 10%, 68px);
+  top: 37%;
 }
 
 .component-c {
-  right: 55px;
-  bottom: 90px;
+  right: clamp(12px, 11%, 72px);
+  bottom: 14%;
 }
 
 .component-d {
-  left: 62px;
-  bottom: 112px;
+  left: clamp(12px, 13%, 82px);
+  bottom: 18%;
 }
 
 .section-number {
@@ -1059,7 +1062,8 @@ h2 {
   position: relative;
   color: #7f7f86;
   font-family: var(--font-tech);
-  font-size: 0.48rem;
+  font-size: clamp(0.42rem, 1.15vw, 0.68rem);
+  line-height: 1.2;
   letter-spacing: 0.06em;
 }
 
@@ -1947,7 +1951,6 @@ body:not(.is-booting):not(.is-booted) .board-visual {
 
 .chip-copy span,
 .chip-copy small,
-.component,
 .expertise-card li,
 .resume-side-block h3,
 .resume-side-block a,
@@ -2328,7 +2331,15 @@ body:not(.is-booting):not(.is-booted) .board-visual {
   .board-tag,
   .component,
   .trace {
-    display: none;
+    display: block;
+  }
+
+  .board-tag {
+    font-size: 0.48rem;
+  }
+
+  .component {
+    font-size: 0.46rem;
   }
 
   .chip {
