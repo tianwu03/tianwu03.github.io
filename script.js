@@ -195,14 +195,19 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
 
   const clearGlow = (target) => {
     target.style.setProperty("--edge-opacity", "0");
+    target.style.setProperty("--surface-opacity", "0");
     target.classList.remove("is-edge-active");
   };
 
   glowTargets.forEach((target) => {
+    const surfaceLight = document.createElement("span");
+    surfaceLight.className = "pointer-surface-light";
+    surfaceLight.setAttribute("aria-hidden", "true");
     const edgeLight = document.createElement("span");
     edgeLight.className = "pointer-edge-light";
     edgeLight.setAttribute("aria-hidden", "true");
     target.classList.add("edge-glow");
+    target.append(surfaceLight);
     target.append(edgeLight);
 
     target.addEventListener("pointermove", (event) => {
@@ -217,13 +222,15 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const edgeDistance = Math.min(x, y, rect.width - x, rect.height - y);
       const centerDistance = Math.max(1, Math.min(rect.width, rect.height) / 2);
       const edgeRatio = Math.min(1, edgeDistance / centerDistance);
-      const proximity = 0.13 + Math.pow(1 - edgeRatio, 1.7) * 0.87;
-      const glowRadius = Math.max(340, edgeDistance + 260);
+      const proximity = 0.24 + Math.pow(1 - edgeRatio, 1.7) * 0.76;
+      const surfaceOpacity = 0.32 + proximity * 0.24;
+      const glowRadius = Math.max(460, edgeDistance * 3 + 300);
 
       target.style.setProperty("--edge-x", `${x}px`);
       target.style.setProperty("--edge-y", `${y}px`);
       target.style.setProperty("--edge-radius", `${glowRadius}px`);
       target.style.setProperty("--edge-opacity", proximity.toFixed(3));
+      target.style.setProperty("--surface-opacity", surfaceOpacity.toFixed(3));
       target.classList.add("is-edge-active");
     });
 

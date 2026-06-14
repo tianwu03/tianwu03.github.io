@@ -19,6 +19,7 @@
   --radius-md: 24px;
   --radius-sm: 14px;
   --frame-stroke: 1px;
+  --effect-stroke: 2px;
   --frame-glow: 8px;
   --max-width: 2160px;
   --page-gutter: clamp(20px, 3.5vw, 88px);
@@ -1345,7 +1346,7 @@ h2 {
 .static-gradient-border {
   position: absolute;
   z-index: 9;
-  inset: calc(0px - var(--frame-stroke));
+  inset: 0;
   padding: var(--frame-stroke);
   border-radius: inherit;
   background: color-mix(in srgb, var(--accent) 34%, var(--line));
@@ -1404,29 +1405,52 @@ h2 {
 .edge-glow {
   --edge-x: 50%;
   --edge-y: 50%;
-  --edge-radius: 340px;
+  --edge-radius: 460px;
   --edge-opacity: 0;
+  --surface-opacity: 0;
   position: relative;
   isolation: isolate;
   transition: border-color 180ms ease, box-shadow 240ms ease;
 }
 
+.pointer-surface-light {
+  position: absolute;
+  z-index: 1;
+  inset: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      280px circle at var(--edge-x) var(--edge-y),
+      rgba(255, 255, 255, 0.26) 0%,
+      rgba(255, 88, 88, 0.2) 18%,
+      rgba(255, 42, 42, 0.1) 42%,
+      transparent 72%
+    );
+  mix-blend-mode: screen;
+  opacity: var(--surface-opacity);
+  pointer-events: none;
+  transition: opacity 260ms ease;
+}
+
 .pointer-edge-light {
   position: absolute;
   z-index: 10;
-  inset: calc(0px - var(--frame-stroke));
-  padding: var(--frame-stroke);
+  inset: 0;
+  padding: var(--effect-stroke);
   border-radius: inherit;
   background:
     radial-gradient(
       var(--edge-radius) circle at var(--edge-x) var(--edge-y),
-      rgba(255, 255, 255, 0.94) 0%,
-      rgba(255, 42, 42, 1) 16%,
-      rgba(255, 42, 42, 0.66) 36%,
-      rgba(150, 0, 0, 0.2) 58%,
-      transparent 76%
+      #ffffff 0%,
+      rgba(255, 255, 255, 0.98) 12%,
+      rgba(255, 74, 74, 1) 24%,
+      rgba(255, 42, 42, 0.86) 42%,
+      rgba(180, 0, 0, 0.36) 64%,
+      transparent 84%
     );
-  filter: drop-shadow(0 0 var(--frame-glow) rgba(255, 42, 42, 0.48));
+  filter:
+    drop-shadow(0 0 5px rgba(255, 255, 255, 0.62))
+    drop-shadow(0 0 var(--frame-glow) rgba(255, 42, 42, 0.72));
   opacity: var(--edge-opacity);
   pointer-events: none;
   transition: opacity 360ms ease;
@@ -1445,7 +1469,7 @@ h2 {
 }
 
 .gradient-frame.is-edge-active > .static-gradient-border {
-  opacity: 0.14;
+  opacity: 0;
 }
 
 .click-spark {
@@ -1563,6 +1587,7 @@ body.is-booted .board-visual {
   .music-control,
   .music-slider,
   .static-gradient-border,
+  .pointer-surface-light,
   .pointer-edge-light,
   .click-spark {
     transition: none;
@@ -2153,8 +2178,7 @@ body.is-booted .board-visual {
       linear-gradient(90deg, color-mix(in srgb, var(--line) 60%, transparent) 0.5px, transparent 0.5px);
   }
 
-  .static-gradient-border,
-  .pointer-edge-light {
+  .static-gradient-border {
     filter: none;
   }
 }
