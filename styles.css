@@ -18,8 +18,8 @@
   --radius-lg: 36px;
   --radius-md: 24px;
   --radius-sm: 14px;
-  --frame-stroke: 1.5px;
-  --frame-glow: 18px;
+  --frame-stroke: 1px;
+  --frame-glow: 8px;
   --max-width: 2160px;
   --page-gutter: clamp(20px, 3.5vw, 88px);
   --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -1320,7 +1320,7 @@ h2 {
 
 .gradient-frame {
   isolation: isolate;
-  border-color: color-mix(in srgb, var(--accent) 32%, var(--line)) !important;
+  border-color: transparent !important;
 }
 
 .brand-icon,
@@ -1345,22 +1345,11 @@ h2 {
 .static-gradient-border {
   position: absolute;
   z-index: 9;
-  inset: 0;
+  inset: calc(0px - var(--frame-stroke));
   padding: var(--frame-stroke);
   border-radius: inherit;
-  background:
-    conic-gradient(
-      from 125deg,
-      #350000 0deg,
-      #6b0000 55deg,
-      #d31515 95deg,
-      #ff3b3b 125deg,
-      #b50f0f 158deg,
-      #5e0000 230deg,
-      #cf1818 302deg,
-      #350000 360deg
-    );
-  opacity: 0;
+  background: color-mix(in srgb, var(--accent) 34%, var(--line));
+  opacity: 0.72;
   pointer-events: none;
   transition: opacity 240ms ease, filter 240ms ease;
   -webkit-mask:
@@ -1372,8 +1361,8 @@ h2 {
 
 .gradient-frame:hover > .static-gradient-border,
 .gradient-frame:focus-within > .static-gradient-border {
-  opacity: 0.62;
-  filter: brightness(1.08) drop-shadow(0 0 6px rgba(255, 42, 42, 0.2));
+  opacity: 0.9;
+  filter: brightness(1.08);
 }
 
 .brand-icon,
@@ -1423,21 +1412,19 @@ h2 {
 .pointer-edge-light {
   position: absolute;
   z-index: 10;
-  inset: 0;
+  inset: calc(0px - var(--frame-stroke));
   padding: var(--frame-stroke);
   border-radius: inherit;
   background:
     radial-gradient(
       340px circle at var(--edge-x) var(--edge-y),
-      #fff 0%,
-      rgba(255, 42, 42, 1) 20%,
-      rgba(255, 42, 42, 0.72) 42%,
-      rgba(150, 0, 0, 0.34) 66%,
-      transparent 84%
+      rgba(255, 255, 255, 0.94) 0%,
+      rgba(255, 42, 42, 1) 16%,
+      rgba(255, 42, 42, 0.66) 36%,
+      rgba(150, 0, 0, 0.2) 58%,
+      transparent 76%
     );
-  filter:
-    drop-shadow(0 0 8px rgba(255, 255, 255, 0.25))
-    drop-shadow(0 0 var(--frame-glow) rgba(255, 42, 42, 0.78));
+  filter: drop-shadow(0 0 var(--frame-glow) rgba(255, 42, 42, 0.48));
   opacity: var(--edge-opacity);
   pointer-events: none;
   transition: opacity 360ms ease;
@@ -1449,10 +1436,9 @@ h2 {
 }
 
 .edge-glow.is-edge-active {
-  border-color: color-mix(in srgb, var(--accent) 78%, #fff);
   box-shadow:
     0 18px 48px rgba(0, 0, 0, 0.34),
-    0 0 20px rgba(255, 42, 42, 0.1);
+    0 0 14px rgba(255, 42, 42, 0.08);
 }
 
 .click-spark {
@@ -2146,7 +2132,7 @@ body.is-booted .board-visual {
 @media (min-resolution: 1.5dppx) {
   :root {
     --frame-stroke: 1px;
-    --frame-glow: 14px;
+    --frame-glow: 6px;
   }
 
   body {
