@@ -156,7 +156,7 @@ const musicLocale = {
     playAria: "播放背景音乐",
     pauseAria: "暂停背景音乐",
     volumeAria: "背景音乐音量",
-    songAria: "在网易云音乐打开 Travelers' encore",
+    songAria: "在网易云音乐打开 Outer Wilds",
   },
   en: {
     play: "PLAY",
@@ -168,7 +168,7 @@ const musicLocale = {
     playAria: "Play background music",
     pauseAria: "Pause background music",
     volumeAria: "Background music volume",
-    songAria: "Open Travelers' encore on NetEase Music",
+    songAria: "Open Outer Wilds on NetEase Music",
   },
 };
 
@@ -213,9 +213,9 @@ if (printButton) {
   printButton.addEventListener("click", () => window.print());
 }
 
-let musicVolume = 0;
-let lastAudibleVolume = Number(localStorage.getItem("music-volume") ?? 24);
-if (!Number.isFinite(lastAudibleVolume) || lastAudibleVolume <= 0) lastAudibleVolume = 24;
+let musicVolume = 50;
+let lastAudibleVolume = Number(localStorage.getItem("music-volume") ?? 50);
+if (!Number.isFinite(lastAudibleVolume) || lastAudibleVolume <= 0) lastAudibleVolume = 50;
 
 const updateMusicControl = (status) => {
   musicVolume = Math.min(100, Math.max(0, musicVolume));
@@ -293,7 +293,7 @@ const playBackgroundMusic = async () => {
 
 if (backgroundAudio) {
   backgroundAudio.muted = true;
-  backgroundAudio.volume = 0;
+  backgroundAudio.volume = musicVolume / 100;
   backgroundAudio.addEventListener("play", () => updateMusicControl());
   backgroundAudio.addEventListener("pause", () => updateMusicControl());
   backgroundAudio.addEventListener("error", () => updateMusicControl("NETEASE"));
@@ -454,19 +454,22 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const rect = target.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const edgeDistance = Math.min(x, y, rect.width - x, rect.height - y);
-      const centerDistance = Math.max(1, Math.min(rect.width, rect.height) / 2);
-      const edgeRatio = Math.min(1, edgeDistance / centerDistance);
-      const proximity = 0.24 + Math.pow(1 - edgeRatio, 1.7) * 0.76;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const dx = x - centerX;
+      const dy = y - centerY;
+      const kx = dx === 0 ? Infinity : centerX / Math.abs(dx);
+      const ky = dy === 0 ? Infinity : centerY / Math.abs(dy);
+      const edgeProximity = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
+      const cursorAngle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
+      const proximity = 0.08 + Math.pow(edgeProximity, 2.2) * 0.92;
       const surfaceOpacity = 0.32 + proximity * 0.24;
-      const glowRadius = Math.max(460, edgeDistance * 3 + 300);
-      const whiteRatio = Math.pow(1 - edgeRatio, 2.1);
-      const edgeGreenBlue = Math.round(42 + whiteRatio * 213);
+      const glowRadius = Math.max(460, Math.min(rect.width, rect.height) * 0.72);
 
       target.style.setProperty("--edge-x", `${x}px`);
       target.style.setProperty("--edge-y", `${y}px`);
       target.style.setProperty("--edge-radius", `${glowRadius}px`);
-      target.style.setProperty("--edge-color", `rgb(255 ${edgeGreenBlue} ${edgeGreenBlue})`);
+      target.style.setProperty("--cursor-angle", `${cursorAngle.toFixed(3)}deg`);
       target.style.setProperty("--edge-opacity", proximity.toFixed(3));
       target.style.setProperty("--surface-opacity", surfaceOpacity.toFixed(3));
       target.classList.add("is-edge-active");
