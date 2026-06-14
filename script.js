@@ -10,14 +10,37 @@ const musicValue = document.querySelector(".music-value");
 const backgroundAudio = document.querySelector(".background-audio");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+const syncPixelAlignedTypography = () => {
+  const pixelRatio = window.devicePixelRatio || 1;
+  const sizes = window.innerWidth >= 1600
+    ? { xs: 13, sm: 15, base: 18 }
+    : { xs: 12, sm: 14, base: 16 };
+  const alignToDevicePixel = (size) => Math.round(size * pixelRatio) / pixelRatio;
+
+  Object.entries(sizes).forEach(([name, size]) => {
+    document.documentElement.style.setProperty(`--text-${name}`, `${alignToDevicePixel(size)}px`);
+  });
+};
+
+syncPixelAlignedTypography();
+window.addEventListener("resize", syncPixelAlignedTypography);
+
 if (!reduceMotion && window.scrollY < 80) {
   document.body.classList.add("is-booting");
+  let bootStarted = false;
+  const startBoot = () => {
+    if (bootStarted) return;
+    bootStarted = true;
+    document.body.classList.add("is-booted");
+    window.setTimeout(() => {
+      document.body.classList.remove("is-booting", "is-booted");
+    }, 1750);
+  };
+
   window.requestAnimationFrame(() => {
-    window.requestAnimationFrame(() => {
-      document.body.classList.add("is-booted");
-      window.setTimeout(() => document.body.classList.remove("is-booting"), 1750);
-    });
+    window.requestAnimationFrame(startBoot);
   });
+  window.setTimeout(startBoot, 160);
 }
 
 if (year) {
@@ -173,6 +196,7 @@ if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
   };
 
   siteNav.addEventListener("pointermove", (event) => {
+    siteNav.classList.add("is-dock-active");
     navLinks.forEach((link) => {
       const rect = link.getBoundingClientRect();
       const distance = Math.abs(event.clientX - (rect.left + rect.width / 2));
@@ -180,10 +204,19 @@ if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       link.style.setProperty("--dock-scale", String(1 + proximity * 0.22));
     });
   });
-  siteNav.addEventListener("pointerleave", resetDock);
+  siteNav.addEventListener("pointerleave", () => {
+    siteNav.classList.remove("is-dock-active");
+    resetDock();
+  });
   navLinks.forEach((link) => {
-    link.addEventListener("focus", () => link.style.setProperty("--dock-scale", "1.18"));
-    link.addEventListener("blur", resetDock);
+    link.addEventListener("focus", () => {
+      siteNav.classList.add("is-dock-active");
+      link.style.setProperty("--dock-scale", "1.18");
+    });
+    link.addEventListener("blur", () => {
+      siteNav.classList.remove("is-dock-active");
+      resetDock();
+    });
   });
 }
 

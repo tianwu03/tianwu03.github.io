@@ -23,11 +23,11 @@
   --frame-glow: 8px;
   --max-width: 2160px;
   --page-gutter: clamp(20px, 3.5vw, 88px);
-  --font-body: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
-  --font-display: "Oxanium", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
+  --font-display: "Oxanium", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif;
   --font-tech: "Oxanium", "DM Mono", monospace;
-  --text-xs: 0.72rem;
-  --text-sm: 0.84rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
   --text-base: 1rem;
   --text-lg: 1.12rem;
   --heading-1: clamp(3.1rem, 6vw, 5.6rem);
@@ -52,8 +52,9 @@ body {
   font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.7;
-  text-rendering: geometricPrecision;
-  -webkit-font-smoothing: antialiased;
+  font-kerning: normal;
+  font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
   -webkit-text-size-adjust: 100%;
   transition: background-color 220ms ease, color 220ms ease;
 }
@@ -107,7 +108,6 @@ button {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.48);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
-  transform: translateY(0);
   transition:
     transform 520ms cubic-bezier(0.22, 1, 0.36, 1),
     border-color 520ms ease,
@@ -115,7 +115,7 @@ button {
     box-shadow 520ms ease,
     -webkit-backdrop-filter 520ms ease,
     backdrop-filter 520ms ease;
-  will-change: transform, background-color, border-color, box-shadow;
+  will-change: background-color, border-color, box-shadow;
 }
 
 .site-header.is-floating {
@@ -203,12 +203,15 @@ button {
   align-items: center;
   min-height: 36px;
   padding: 0 4px;
-  transform: translateY(calc((var(--dock-scale, 1) - 1) * -12px)) scale(var(--dock-scale, 1));
   transform-origin: center bottom;
   transition:
     color 160ms ease,
     text-shadow 160ms ease,
     transform 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-nav.is-dock-active a {
+  transform: translateY(calc((var(--dock-scale, 1) - 1) * -12px)) scale(var(--dock-scale, 1));
 }
 
 .site-nav a:hover {
@@ -1536,12 +1539,12 @@ body.is-booted .board-visual {
 }
 
 body.is-booted .site-header {
-  transform: translateY(0);
+  transform: none;
   transition-delay: 60ms;
 }
 
 body.is-booted .hero-copy > * {
-  transform: translateY(0);
+  transform: none;
   transition:
     opacity 680ms ease,
     transform 680ms cubic-bezier(0.22, 1, 0.36, 1),
@@ -1561,6 +1564,16 @@ body.is-booted .board-visual {
     opacity 900ms 420ms ease,
     transform 1050ms 420ms cubic-bezier(0.22, 1, 0.36, 1),
     filter 900ms 420ms ease;
+}
+
+body:not(.is-booting):not(.is-booted) .hero-copy > *,
+body:not(.is-booting):not(.is-booted) .board-visual {
+  filter: none;
+  transform: none;
+}
+
+.site-header:not(.is-floating) {
+  transform: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1619,7 +1632,7 @@ body.is-booted .board-visual {
 
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 @media (max-width: 980px) {
@@ -1822,9 +1835,9 @@ body.is-booted .board-visual {
 
 @media (min-width: 1600px) {
   :root {
-    --text-xs: 0.78rem;
-    --text-sm: 0.92rem;
-    --text-base: 1.08rem;
+    --text-xs: 0.8125rem;
+    --text-sm: 0.9375rem;
+    --text-base: 1.125rem;
     --heading-1: clamp(5.8rem, 5.2vw, 7.6rem);
     --heading-2: clamp(3.8rem, 3.8vw, 5.5rem);
     --frame-stroke: 1px;
@@ -1985,8 +1998,8 @@ body.is-booted .board-visual {
 
 @media (max-width: 760px) {
   :root {
-    --text-xs: 0.7rem;
-    --text-sm: 0.82rem;
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
     --heading-1: clamp(2.35rem, 10.8vw, 4.1rem);
     --heading-2: clamp(2.1rem, 10vw, 3.25rem);
   }
@@ -2165,10 +2178,6 @@ body.is-booted .board-visual {
   :root {
     --frame-stroke: 1px;
     --frame-glow: 6px;
-  }
-
-  body {
-    -webkit-font-smoothing: auto;
   }
 
   .circuit-background {
