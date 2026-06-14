@@ -224,6 +224,10 @@ const playlist = [
   { title: "Travelers", id: "1903408778" },
   { title: "14.3 Billion Years", id: "1903408779" },
   { title: "Outer Wilds", id: "1903401563" },
+  { title: "Timber Hearth", id: "1903401484" },
+  { title: "The Ash Twin Project", id: "1903401599" },
+  { title: "Dark Bramble", id: "1903408774" },
+  { title: "Giant's Deep", id: "1903360031" },
 ];
 let currentTrackIndex = 2;
 
