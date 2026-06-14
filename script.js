@@ -150,27 +150,8 @@ updateMusicControl();
 
 const gradientFrameTargets = document.querySelectorAll(
   [
-    ".site-header",
-    ".brand-icon",
-    ".music-control",
-    ".music-toggle",
-    ".print-button",
-    ".signal-label",
-    ".button-primary",
     ".board-visual",
-    ".chip",
-    ".component",
-    ".principles span",
-    ".expertise-card",
-    ".card-icon",
-    ".expertise-card li",
     ".resume-shell",
-    ".tag-list span",
-    ".achievement-badge",
-    ".education-entry",
-    ".interest-row",
-    ".interest-tags span",
-    ".gallery-placeholder",
     ".contact-panel",
   ].join(", "),
 );
@@ -208,7 +189,7 @@ if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
 
 if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
   const glowTargets = document.querySelectorAll(
-    ".board-visual, .expertise-card, .resume-shell, .education-entry, .interest-row, .contact-panel, .music-control",
+    ".board-visual, .expertise-card, .resume-shell, .interest-row, .contact-panel",
   );
   let activeGlowTarget;
 

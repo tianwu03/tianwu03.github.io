@@ -1320,7 +1320,7 @@ h2 {
 
 .gradient-frame {
   isolation: isolate;
-  border-color: transparent !important;
+  border-color: color-mix(in srgb, var(--accent) 32%, var(--line)) !important;
 }
 
 .brand-icon,
@@ -1352,15 +1352,15 @@ h2 {
     conic-gradient(
       from 125deg,
       #350000 0deg,
-      #a80000 55deg,
-      #ff2a2a 95deg,
-      #ffffff 125deg,
-      #ff3030 158deg,
+      #6b0000 55deg,
+      #d31515 95deg,
+      #ff3b3b 125deg,
+      #b50f0f 158deg,
       #5e0000 230deg,
-      #ff4d4d 302deg,
+      #cf1818 302deg,
       #350000 360deg
     );
-  opacity: 0.78;
+  opacity: 0;
   pointer-events: none;
   transition: opacity 240ms ease, filter 240ms ease;
   -webkit-mask:
@@ -1372,8 +1372,8 @@ h2 {
 
 .gradient-frame:hover > .static-gradient-border,
 .gradient-frame:focus-within > .static-gradient-border {
-  opacity: 1;
-  filter: brightness(1.25) drop-shadow(0 0 8px rgba(255, 42, 42, 0.42));
+  opacity: 0.62;
+  filter: brightness(1.08) drop-shadow(0 0 6px rgba(255, 42, 42, 0.2));
 }
 
 .brand-icon,
@@ -1451,8 +1451,8 @@ h2 {
 .edge-glow.is-edge-active {
   border-color: color-mix(in srgb, var(--accent) 78%, #fff);
   box-shadow:
-    var(--shadow),
-    0 0 26px rgba(255, 42, 42, 0.14);
+    0 18px 48px rgba(0, 0, 0, 0.34),
+    0 0 20px rgba(255, 42, 42, 0.1);
 }
 
 .click-spark {
