@@ -9,8 +9,10 @@
     />
     <meta name="theme-color" content="#060606" />
     <title>顾峥 | 硬件工程师</title>
-    <link rel="stylesheet" href="./styles.css?v=playlist-extend-1" />
-    <script src="./script.js?v=playlist-extend-1" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="./styles.css?v=design-refresh-1" />
+    <script src="./script.js?v=design-refresh-1" defer></script>
   </head>
   <body>
     <div class="circuit-background" aria-hidden="true"></div>
@@ -24,18 +26,25 @@
         </span>
       </a>
 
-      <nav class="site-nav" aria-label="主导航">
+      <nav class="site-nav" id="site-navigation" aria-label="主导航">
         <a href="#about">个人介绍</a>
         <a href="#expertise">专业能力</a>
         <a href="#resume">简历</a>
+        <a href="#interests">兴趣爱好</a>
       </nav>
 
       <div class="header-actions">
-        <div class="music-control">
+        <button class="music-disclosure" type="button" aria-expanded="false" aria-controls="music-panel" aria-label="背景音乐">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 18V5l11-2v13M9 8l11-2"/><ellipse cx="6" cy="18" rx="3" ry="2.5"/><ellipse cx="17" cy="16" rx="3" ry="2.5"/></svg>
+          <span class="music-disclosure-copy"><span>背景音乐</span><small translate="no">Outer Wilds</small></span>
+          <span class="music-indicator" aria-hidden="true"></span>
+        </button>
+        <div class="music-control" id="music-panel" hidden>
+          <div class="music-panel-heading"><span>背景音乐</span><button class="music-close" type="button" aria-label="关闭音乐面板">&times;</button></div>
           <audio
             class="background-audio"
             src="https://music.163.com/song/media/outer/url?id=1903401563.mp3"
-            preload="metadata"
+            preload="none"
             muted
             playsinline
           ></audio>
@@ -53,23 +62,24 @@
                 type="range"
                 min="0"
                 max="100"
-                value="0"
+                value="50"
                 aria-label="背景音乐音量"
               />
               <span class="music-value" aria-live="polite">音量 50%</span>
             </div>
             <a
               class="music-meta"
-              href="https://music.163.com/#/song?id=2728251483"
+              href="https://music.163.com/#/song?id=1903401563"
               target="_blank"
               rel="noreferrer"
               aria-label="在网易云音乐打开 Outer Wilds"
             >
-              <strong>Outer Wilds——Outer Wilds</strong>
+              <strong translate="no">Outer Wilds——Outer Wilds</strong>
             </a>
           </div>
         </div>
         <button class="print-button" type="button">打印简历</button>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开导航"><span></span><span></span></button>
         <button class="language-toggle" type="button" aria-label="切换至英文" aria-pressed="false">EN</button>
       </div>
     </header>
@@ -79,17 +89,16 @@
         <div class="hero-copy">
           <div class="signal-label">
             <span class="signal-dot"></span>
-            AVAILABLE FOR NEW IDEAS
+            HARDWARE ENGINEER / SHANGHAI
           </div>
           <p class="eyebrow">HARDWARE · EMBEDDED · PRODUCT</p>
-          <h1>
+          <h1 id="hero-title">
             把复杂电路，
             <span>做成可靠产品。</span>
           </h1>
           <p class="hero-intro">
-            <strong>顾峥</strong>，硬件开发工程师，现就职于上海极洞科技有限公司。
-            专注芯片级硬件开发、多传感器融合与高密度互连设计，覆盖方案调研、原理图、
-            8层2阶 / 10层3阶 HDI、制板对接、装配协同及调试验证。
+            <strong>顾峥</strong>，上海极洞科技有限公司硬件开发工程师。
+            专注高阶 HDI、芯片级感知硬件与多传感器融合，推动电路、结构与产品协同落地。
           </p>
           <div class="hero-actions">
             <a class="button button-primary" href="#resume">查看个人简历</a>
@@ -172,7 +181,7 @@
         <div class="expertise-grid">
           <article class="expertise-card reveal">
             <span class="card-code">HW.01</span>
-            <div class="card-icon" aria-hidden="true">⌁</div>
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="8" y="8" width="16" height="16" rx="2"/><rect x="12" y="12" width="8" height="8"/><path d="M12 3v5m8-5v5M12 24v5m8-5v5M3 12h5m-5 8h5m16-8h5m-5 8h5"/></svg></div>
             <h3>芯片级硬件开发</h3>
             <p>围绕核心芯片与传感器进行方案选型、原理图设计、电源树规划和接口电路开发。</p>
             <ul>
@@ -184,7 +193,7 @@
 
           <article class="expertise-card reveal">
             <span class="card-code">HW.02</span>
-            <div class="card-icon" aria-hidden="true">▦</div>
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><path d="m16 4 12 7-12 7-12-7 12-7Zm-12 13 12 7 12-7M4 23l12 7 12-7"/></svg></div>
             <h3>高阶 HDI 设计</h3>
             <p>具备 8层2阶、10层3阶 HDI 板设计经验，关注层叠规划、高速信号与量产可制造性。</p>
             <ul>
@@ -196,7 +205,7 @@
 
           <article class="expertise-card reveal">
             <span class="card-code">HW.03</span>
-            <div class="card-icon" aria-hidden="true">⌇</div>
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="16" cy="16" r="11"/><circle cx="16" cy="16" r="5"/><path d="M16 2v7m0 14v7M2 16h7m14 0h7m-7-7 6-6"/></svg></div>
             <h3>多传感器融合</h3>
             <p>面向感知系统完成毫米波雷达、GNSS/INS 与摄像头模组的芯片级方案开发与系统接入。</p>
             <ul>
@@ -208,7 +217,7 @@
 
           <article class="expertise-card reveal">
             <span class="card-code">HW.04</span>
-            <div class="card-icon" aria-hidden="true">◉</div>
+            <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 4H4v6m18-6h6v6M4 22v6h6m12 0h6v-6"/><circle cx="16" cy="16" r="7"/><circle cx="16" cy="16" r="2"/></svg></div>
             <h3>深度视觉与验证</h3>
             <p>具备 ToF 相机接入经验，覆盖 iToF / dToF 方案适配、板级调试、系统联调与问题闭环。</p>
             <ul>
@@ -222,11 +231,12 @@
 
       <section class="resume section" id="resume">
         <div class="section-number" aria-hidden="true">03 / RESUME</div>
+        <div class="section-heading reveal"><p class="eyebrow">EXPERIENCE &amp; EDUCATION</p><h2>个人简历</h2></div>
         <div class="resume-shell">
           <aside class="resume-sidebar">
             <div>
-              <p class="eyebrow">CURRICULUM VITAE</p>
-              <h2>个人简历</h2>
+              <p class="eyebrow">ENGINEER PROFILE</p>
+              <h3 class="resume-name">顾峥</h3>
               <p class="resume-summary">
                 硬件开发工程师，聚焦高阶 HDI、芯片级感知硬件、多传感器融合与产品工程化。
               </p>
@@ -345,19 +355,15 @@
               <div class="skill-matrix">
                 <div>
                   <span>芯片级硬件方案与电源树设计</span>
-                  <i style="--level: 88%"></i>
                 </div>
                 <div>
                   <span>8层2阶 / 10层3阶 HDI 与工程化设计</span>
-                  <i style="--level: 88%"></i>
                 </div>
                 <div>
                   <span>毫米波雷达、GNSS/INS 与摄像头模组</span>
-                  <i style="--level: 86%"></i>
                 </div>
                 <div>
                   <span>iToF / dToF 接入、Bring-up 与系统联调</span>
-                  <i style="--level: 84%"></i>
                 </div>
               </div>
             </article>
@@ -378,16 +384,18 @@
               </div>
             </article>
 
-            <article class="resume-block">
-              <div class="resume-block-title">
-                <span>INTERESTS</span>
-                <h3>兴趣爱好</h3>
-              </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="interests section" id="interests">
+        <div class="section-number" aria-hidden="true">04 / INTERESTS</div>
+        <div class="section-heading reveal"><p class="eyebrow">BEYOND THE CIRCUIT</p><h2>兴趣爱好</h2></div>
               <div class="interest-content">
                 <article class="interest-row">
                   <div class="interest-copy">
                     <span class="interest-code">3D.01</span>
-                    <h4>SolidWorks 与机械设计</h4>
+                    <h3>SolidWorks 与机械设计</h3>
                     <p>
                       习惯从零件功能、内部器件布局和装配路径出发建立三维模型，持续关注壁厚、公差、
                       紧固方式、接口开孔和可制造性。建模过程不仅追求外观完整，也会结合 PCB 尺寸、
@@ -407,7 +415,7 @@
                 <article class="interest-row">
                   <div class="interest-copy">
                     <span class="interest-code">FAB.02</span>
-                    <h4>3D 打印与设备调试</h4>
+                    <h3>3D 打印与设备调试</h3>
                     <p>
                       拥有拓竹 H2C 3D 打印机，乐于研究材料特性、模型摆放、支撑策略、切片参数和设备状态。
                       遇到翘曲、拉丝、层纹或尺寸偏差时，会通过参数对比与重复试验定位原因，
@@ -427,7 +435,7 @@
                 <article class="interest-row">
                   <div class="interest-copy">
                     <span class="interest-code">TEAR.03</span>
-                    <h4>电子产品拆解研究</h4>
+                    <h3>电子产品拆解研究</h3>
                     <p>
                       对电子产品内部实现保持强烈好奇，特别享受“拆拆拆”的过程。拆解时会观察 PCB 分区、
                       器件选型、屏蔽与散热、天线位置、结构固定和装配顺序，并结合产品定位分析设计取舍，
@@ -447,7 +455,7 @@
                 <article class="interest-row">
                   <div class="interest-copy">
                     <span class="interest-code">DIY.04</span>
-                    <h4>电子创作与原型验证</h4>
+                    <h3>电子创作与原型验证</h3>
                     <p>
                       持续关注新器件、新型传感器和有趣的电子产品，倾向于通过快速原型把想法落到实物。
                       从方案草图、器件选型和电路搭建，到结构制作、焊接调试和问题复盘，
@@ -464,9 +472,6 @@
                   </div>
                 </article>
               </div>
-            </article>
-          </div>
-        </div>
       </section>
 
     </main>

@@ -13,17 +13,21 @@ const musicLink = document.querySelector(".music-meta");
 const previousTrackButton = document.querySelector(".music-previous");
 const nextTrackButton = document.querySelector(".music-next");
 const languageToggle = document.querySelector(".language-toggle");
+const musicDisclosure = document.querySelector(".music-disclosure");
+const musicClose = document.querySelector(".music-close");
+const menuToggle = document.querySelector(".menu-toggle");
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const translationPairs = new Map(Object.entries({
   "顾峥": "Gu Zheng",
+  "背景音乐": "Background music",
   "个人介绍": "Profile",
   "专业能力": "Expertise",
   "简历": "Resume",
   "打印简历": "Print Resume",
   "把复杂电路，": "TURN COMPLEX CIRCUITS",
   "做成可靠产品。": "INTO RELIABLE PRODUCTS.",
-  "，硬件开发工程师，现就职于上海极洞科技有限公司。 专注芯片级硬件开发、多传感器融合与高密度互连设计，覆盖方案调研、原理图、 8层2阶 / 10层3阶 HDI、制板对接、装配协同及调试验证。": ", a hardware development engineer at Shanghai Jidong Technology Co., Ltd. Focused on chip-level hardware, multi-sensor fusion, and high-density interconnect design, covering research, schematics, 8-layer 2-step / 10-layer 3-step HDI, fabrication coordination, assembly, and validation.",
+  "，上海极洞科技有限公司硬件开发工程师。 专注高阶 HDI、芯片级感知硬件与多传感器融合，推动电路、结构与产品协同落地。": ", hardware development engineer at Shanghai Jidong Technology. Focused on advanced HDI, chip-level sensing and sensor fusion, bringing electronics, mechanics and products together.",
   "查看个人简历": "VIEW RESUME",
   "芯片级开发": "CHIP-LEVEL DESIGN",
   "高阶 HDI": "ADVANCED HDI",
@@ -176,21 +180,6 @@ const musicLocale = {
   },
 };
 
-const syncPixelAlignedTypography = () => {
-  const pixelRatio = window.devicePixelRatio || 1;
-  const sizes = window.innerWidth >= 1600
-    ? { xs: 13, sm: 15, base: 18 }
-    : { xs: 12, sm: 14, base: 16 };
-  const alignToDevicePixel = (size) => Math.round(size * pixelRatio) / pixelRatio;
-
-  Object.entries(sizes).forEach(([name, size]) => {
-    document.documentElement.style.setProperty(`--text-${name}`, `${alignToDevicePixel(size)}px`);
-  });
-};
-
-syncPixelAlignedTypography();
-window.addEventListener("resize", syncPixelAlignedTypography);
-
 if (!reduceMotion && window.scrollY < 80) {
   document.body.classList.add("is-booting");
   let bootStarted = false;
@@ -246,6 +235,7 @@ const updateMusicControl = (status) => {
     musicControl.classList.toggle("is-playing", isPlaying);
     musicControl.classList.toggle("is-unavailable", status === "NETEASE");
   }
+  musicDisclosure?.classList.toggle("is-playing", isPlaying);
   if (musicSlider) {
     musicSlider.value = String(musicVolume);
   }
@@ -283,6 +273,11 @@ const applyLanguage = (language) => {
   printButton?.setAttribute("aria-label", meta.print);
   musicSlider?.setAttribute("aria-label", labels.volumeAria);
   musicLink?.setAttribute("aria-label", `${currentLanguage === "en" ? "Open" : "在网易云音乐打开"} ${playlist[currentTrackIndex].title}`);
+  musicDisclosure?.setAttribute("aria-label", currentLanguage === "en" ? "Background music" : "背景音乐");
+  musicClose?.setAttribute("aria-label", currentLanguage === "en" ? "Close music panel" : "关闭音乐面板");
+  previousTrackButton?.setAttribute("aria-label", currentLanguage === "en" ? "Previous track" : "上一首");
+  nextTrackButton?.setAttribute("aria-label", currentLanguage === "en" ? "Next track" : "下一首");
+  syncMenuLabel();
 
   updateMusicControl();
 };
@@ -318,8 +313,10 @@ const selectTrack = (index, shouldPlay = false) => {
   if (musicTitle) musicTitle.textContent = `${track.title}——Outer Wilds`;
   if (musicLink) {
     musicLink.href = `https://music.163.com/#/song?id=${track.id}`;
-    musicLink.setAttribute("aria-label", `在网易云音乐打开 ${track.title}`);
+    musicLink.setAttribute("aria-label", `${currentLanguage === "en" ? "Open" : "在网易云音乐打开"} ${track.title}`);
   }
+  const compactTitle = musicDisclosure?.querySelector("small");
+  if (compactTitle) compactTitle.textContent = track.title;
 
   if (shouldPlay) {
     void playBackgroundMusic();
@@ -379,14 +376,14 @@ const createClickSparks = (x, y) => {
   if (reduceMotion) return;
 
   const fragment = document.createDocumentFragment();
-  const sparkCount = 10 + Math.floor(Math.random() * 7);
+  const sparkCount = 6 + Math.floor(Math.random() * 4);
 
   for (let index = 0; index < sparkCount; index += 1) {
     const spark = document.createElement("span");
     const angle = Math.random() * 360;
-    const distance = 28 + Math.random() * 52;
-    const length = 7 + Math.random() * 18;
-    const width = 2 + Math.random() * 2;
+    const distance = 16 + Math.random() * 28;
+    const length = 5 + Math.random() * 8;
+    const width = 1 + Math.random();
     const duration = 430 + Math.random() * 360;
     const isWhite = Math.random() < 0.38;
 
@@ -406,7 +403,7 @@ const createClickSparks = (x, y) => {
 };
 
 document.addEventListener("click", (event) => {
-  if (!event.target.closest(".music-slider")) {
+  if (event.detail > 0 && !event.target.closest("button, a, input, .site-header")) {
     createClickSparks(event.clientX, event.clientY);
   }
 });
@@ -417,15 +414,61 @@ if (languageToggle) {
   });
 }
 
+function syncMenuLabel() {
+  const open = menuToggle?.getAttribute("aria-expanded") === "true";
+  menuToggle?.setAttribute("aria-label", currentLanguage === "en"
+    ? (open ? "Close navigation" : "Open navigation")
+    : (open ? "收起导航" : "展开导航"));
+}
+
+const setNavigationOpen = (open) => {
+  siteNav?.classList.toggle("is-open", open);
+  menuToggle?.setAttribute("aria-expanded", String(open));
+  syncMenuLabel();
+};
+
+const setMusicPanelOpen = (open) => {
+  if (musicControl) musicControl.hidden = !open;
+  musicDisclosure?.setAttribute("aria-expanded", String(open));
+};
+
+musicDisclosure?.addEventListener("click", () => {
+  const open = musicControl?.hidden;
+  setNavigationOpen(false);
+  setMusicPanelOpen(open);
+});
+musicClose?.addEventListener("click", () => {
+  setMusicPanelOpen(false);
+  musicDisclosure?.focus();
+});
+menuToggle?.addEventListener("click", () => {
+  const open = menuToggle.getAttribute("aria-expanded") !== "true";
+  setMusicPanelOpen(false);
+  setNavigationOpen(open);
+});
+siteNav?.addEventListener("click", (event) => {
+  if (event.target.closest("a")) setNavigationOpen(false);
+});
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".music-control, .music-disclosure")) setMusicPanelOpen(false);
+  if (!event.target.closest(".site-nav, .menu-toggle")) setNavigationOpen(false);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape") return;
+  if (musicControl && !musicControl.hidden) {
+    setMusicPanelOpen(false);
+    musicDisclosure?.focus();
+  }
+  if (menuToggle?.getAttribute("aria-expanded") === "true") {
+    setNavigationOpen(false);
+    menuToggle.focus();
+  }
+});
+window.matchMedia("(max-width: 900px)").addEventListener("change", () => setNavigationOpen(false));
+
 applyLanguage(currentLanguage);
 
-const gradientFrameTargets = document.querySelectorAll(
-  [
-    ".board-visual",
-    ".resume-shell",
-    ".contact-panel",
-  ].join(", "),
-);
+const gradientFrameTargets = document.querySelectorAll(".board-visual");
 
 gradientFrameTargets.forEach((target) => {
   if (target.querySelector(":scope > .static-gradient-border")) return;
@@ -435,42 +478,9 @@ gradientFrameTargets.forEach((target) => {
   target.classList.add("gradient-frame");
   target.append(border);
 });
-
-if (siteNav && !reduceMotion && window.matchMedia("(pointer: fine)").matches) {
-  const navLinks = [...siteNav.querySelectorAll("a")];
-
-  const resetDock = () => {
-    navLinks.forEach((link) => link.style.setProperty("--dock-scale", "1"));
-  };
-
-  siteNav.addEventListener("pointermove", (event) => {
-    siteNav.classList.add("is-dock-active");
-    navLinks.forEach((link) => {
-      const rect = link.getBoundingClientRect();
-      const distance = Math.abs(event.clientX - (rect.left + rect.width / 2));
-      const proximity = Math.max(0, 1 - distance / 125);
-      link.style.setProperty("--dock-scale", String(1 + proximity * 0.22));
-    });
-  });
-  siteNav.addEventListener("pointerleave", () => {
-    siteNav.classList.remove("is-dock-active");
-    resetDock();
-  });
-  navLinks.forEach((link) => {
-    link.addEventListener("focus", () => {
-      siteNav.classList.add("is-dock-active");
-      link.style.setProperty("--dock-scale", "1.18");
-    });
-    link.addEventListener("blur", () => {
-      siteNav.classList.remove("is-dock-active");
-      resetDock();
-    });
-  });
-}
-
 if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
   const glowTargets = document.querySelectorAll(
-    ".board-visual, .expertise-card, .resume-shell, .interest-row, .contact-panel",
+    ".board-visual",
   );
   let activeGlowTarget;
 
@@ -507,15 +517,11 @@ if (!reduceMotion && window.matchMedia("(pointer: fine)").matches) {
       const kx = dx === 0 ? Infinity : centerX / Math.abs(dx);
       const ky = dy === 0 ? Infinity : centerY / Math.abs(dy);
       const edgeProximity = Math.min(Math.max(1 / Math.min(kx, ky), 0), 1);
-      const cursorAngle = Math.atan2(dy, dx) * (180 / Math.PI) + 90;
       const proximity = 0.08 + Math.pow(edgeProximity, 2.2) * 0.92;
-      const surfaceOpacity = 0.38 + proximity * 0.27;
-      const glowRadius = Math.max(460, Math.min(rect.width, rect.height) * 0.72);
+      const surfaceOpacity = 0.18 + proximity * 0.15;
 
       target.style.setProperty("--edge-x", `${x}px`);
       target.style.setProperty("--edge-y", `${y}px`);
-      target.style.setProperty("--edge-radius", `${glowRadius}px`);
-      target.style.setProperty("--cursor-angle", `${cursorAngle.toFixed(3)}deg`);
       target.style.setProperty("--edge-opacity", proximity.toFixed(3));
       target.style.setProperty("--surface-opacity", surfaceOpacity.toFixed(3));
       target.classList.add("is-edge-active");
@@ -547,6 +553,13 @@ if (siteHeader && aboutSection) {
       siteHeader.classList.remove("is-floating");
     }
 
+    const activeSection = [...document.querySelectorAll("main > section[id]")]
+      .reverse().find((section) => section.getBoundingClientRect().top <= 180);
+    siteNav?.querySelectorAll("a").forEach((link) => {
+      if (link.hash === `#${activeSection?.id}`) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+
     ticking = false;
   };
 
@@ -567,7 +580,7 @@ if (siteHeader && aboutSection) {
 
 const revealElements = document.querySelectorAll(".reveal");
 
-if ("IntersectionObserver" in window) {
+if ("IntersectionObserver" in window && !reduceMotion) {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -580,7 +593,10 @@ if ("IntersectionObserver" in window) {
     { threshold: 0.12 },
   );
 
-  revealElements.forEach((element) => observer.observe(element));
+  revealElements.forEach((element) => {
+    element.classList.add("reveal-pending");
+    observer.observe(element);
+  });
 } else {
   revealElements.forEach((element) => element.classList.add("is-visible"));
 }
